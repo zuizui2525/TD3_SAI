@@ -23,6 +23,18 @@
     <Filter Include="Zuizui\source">
       <UniqueIdentifier>{a107891a-6f01-4299-a068-58db1c0590fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="game">
+      <UniqueIdentifier>{f42abdac-8dfa-4e6b-8cb5-52a465c2cb6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\player">
+      <UniqueIdentifier>{395e2c7f-6441-46f9-bf92-02d697ca8eee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\enemy">
+      <UniqueIdentifier>{5353736c-22d6-42fc-a20c-ca9aa502f586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\map">
+      <UniqueIdentifier>{74732a8d-5f0c-419e-84f9-0718c60f9422}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp">
@@ -55,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="shake.cpp">
       <Filter>Zuizui\source</Filter>
+    </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>game\map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -139,9 +154,6 @@
     <ClInclude Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.h">
       <Filter>KamataEngine</Filter>
     </ClInclude>
-    <ClInclude Include="struct.h">
-      <Filter>Zuizui\header</Filter>
-    </ClInclude>
     <ClInclude Include="Zuizui.h">
       <Filter>Zuizui\header</Filter>
     </ClInclude>
@@ -150,6 +162,15 @@
     </ClInclude>
     <ClInclude Include="shake.h">
       <Filter>Zuizui\header</Filter>
+    </ClInclude>
+    <ClInclude Include="struct.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>game\map</Filter>
+    </ClInclude>
+    <ClInclude Include="mapCode.h">
+      <Filter>game\map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

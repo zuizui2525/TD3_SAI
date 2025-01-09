@@ -1,6 +1,8 @@
 #include <Novice.h>
 #include "struct.h"
 #include "Zuizui.h"
+#include "map.h"
+#include "mapCode.h"
 #include "Player.h"
 
 const char kWindowTitle[] = "ゲームタイトル";
@@ -15,53 +17,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//フルスクリーン表示
 	Novice::SetWindowMode(kFullscreen);
 
-	//画像
-	Images image;
-
-	//マップ
-	int const mapRow = 18;//行[y]
-	int const mapColumn = 21;//列[x]
-	int map[mapRow][mapColumn] = {
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},//1
-		{0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},//2
-		{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},//3
-		{0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},//4
-		{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},//5
-		{0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},//6
-		{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},//7
-		{0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},//8
-		{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},//9
-		{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},//10
-		{0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},//11
-		{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},//12
-		{0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},//13
-		{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},//14
-		{0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},//15
-		{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},//16
-		{0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},//17
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} //18
-	};
-	//block
-	float const blockSize = 60.0f;
-	Quad blocks[mapRow][mapColumn];
-	for (int y = 0; y < mapRow; y++) {
-		for (int x = 0; x < mapColumn; x++) {
-			blocks[y][x].size = blockSize;
-			blocks[y][x].radius = { blockSize / 2,blockSize / 2 };
-			blocks[y][x].pos = { blockSize * x + blocks[y][x].radius.x,blockSize * y + blocks[y][x].radius.y };
-			blocks[y][x].leftTop = {};
-			blocks[y][x].rightTop = {};
-			blocks[y][x].leftBottom = {};
-			blocks[y][x].rightBottom = {};
-			blocks[y][x].imagePos = { map[y][x],0 };
-			blocks[y][x].imageWidth = 60;
-			blocks[y][x].imageHeight = 60;
-			blocks[y][x].image = image.blocks;
-			blocks[y][x].color = WHITE;
-		}
-	}
-
-	Player* player = new Player();
+	Map* map = new Map();
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -80,14 +36,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 		
-		for (int y = 0; y < mapRow; y++) {
-			for (int x = 0; x < mapColumn; x++) {
-				blocks[y][x].leftTop = { blocks[y][x].pos.x - blocks[y][x].radius.x,blocks[y][x].pos.y - blocks[y][x].radius.y };
-				blocks[y][x].rightTop = { blocks[y][x].pos.x + blocks[y][x].radius.x,blocks[y][x].pos.y - blocks[y][x].radius.y };
-				blocks[y][x].leftBottom = { blocks[y][x].pos.x - blocks[y][x].radius.x,blocks[y][x].pos.y + blocks[y][x].radius.y };
-				blocks[y][x].rightBottom = { blocks[y][x].pos.x + blocks[y][x].radius.x,blocks[y][x].pos.y + blocks[y][x].radius.y };
-			}
-		}
+		map->changeTheMap(map1);
+		
+		map->Update();
 
 		player->Control(keys);
 		player->Update();
@@ -100,11 +51,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 		
-		for (int y = 0; y < mapRow; y++) {
-			for (int x = 0; x < mapColumn; x++) {
-				DrawQuad(blocks[y][x]);
-			}
-		}
+		map->Draw();
 
 		player->Draw();
 
