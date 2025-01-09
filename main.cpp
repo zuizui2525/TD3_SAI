@@ -18,6 +18,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Novice::SetWindowMode(kFullscreen);
 
 	Map* map = new Map();
+	Player* player = new Player();
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -69,6 +70,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 
 	delete player;
+	delete map;
 
 	// ライブラリの終了
 	Novice::Finalize();
