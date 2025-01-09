@@ -6,6 +6,12 @@
 ///========================================================================
 //宣言時の例:Vector2<int>pos = {}; Vector2<float>pos = {};
 
+enum Size {
+	SMALL,
+	MEDIUM,
+	LARGE
+};
+
 template <typename T>
 struct Vector2 {
 	T x;
@@ -84,6 +90,7 @@ struct Sprite {
 //image: テクスチャハンドル
 //color: 色
 struct Quad {
+	float size;
 	Vector2<float> pos;
 	Vector2<float> radius;
 	Vector2<float> leftTop;
@@ -95,4 +102,8 @@ struct Quad {
 	int imageHeight;
 	int image;
 	int color;
+};
+
+struct Images {
+	int blocks = Novice::LoadTexture("./Resources./images./blocks.png");
 };

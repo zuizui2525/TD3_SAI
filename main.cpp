@@ -1,6 +1,9 @@
 #include <Novice.h>
 #include "struct.h"
 #include "Zuizui.h"
+#include "map.h"
+#include "mapCode.h"
+#include "Player.h"
 
 const char kWindowTitle[] = "ゲームタイトル";
 
@@ -8,9 +11,14 @@ const char kWindowTitle[] = "ゲームタイトル";
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ライブラリの初期化
-	int const kWindowWidth = 1280;//windowの横幅
-	int const kWindowHeight = 720;//windowの縦幅
+	int const kWindowWidth = 1960;//windowの横幅
+	int const kWindowHeight = 1080;//windowの縦幅
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
+	//フルスクリーン表示
+	Novice::SetWindowMode(kFullscreen);
+
+	Map* map = new Map();
+	Player* player = new Player();
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -29,6 +37,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 		
+		map->changeTheMap(map1);
+		
+		map->Update();
+
+		player->Control(keys);
+		player->Update();
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -37,6 +52,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 		
+		map->Draw();
+
+		player->Draw();
+
 		///
 		/// ↑描画処理ここまで
 		///
@@ -49,6 +68,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		}
 	}
+
+	delete player;
+	delete map;
 
 	// ライブラリの終了
 	Novice::Finalize();
