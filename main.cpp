@@ -1,6 +1,7 @@
 #include <Novice.h>
 #include "struct.h"
 #include "Zuizui.h"
+#include "Player.h"
 
 const char kWindowTitle[] = "ゲームタイトル";
 
@@ -60,6 +61,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 	}
 
+	Player* player = new Player();
+
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
 	char preKeys[256] = {0};
@@ -86,6 +89,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 		}
 
+		player->Control(keys);
+		player->Update();
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -100,6 +106,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 		}
 
+		player->Draw();
+
 		///
 		/// ↑描画処理ここまで
 		///
@@ -112,6 +120,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		}
 	}
+
+	delete player;
 
 	// ライブラリの終了
 	Novice::Finalize();
