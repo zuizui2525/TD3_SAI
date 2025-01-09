@@ -1,2 +1,2 @@
-#pragma once
-#include "struct.h"
+﻿#include "struct.h"
+#include "shake.h"

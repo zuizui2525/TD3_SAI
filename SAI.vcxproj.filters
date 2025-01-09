@@ -53,6 +53,9 @@
     <ClCompile Include="particles.cpp">
       <Filter>Zuizui\source</Filter>
     </ClCompile>
+    <ClCompile Include="shake.cpp">
+      <Filter>Zuizui\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -143,6 +146,9 @@
       <Filter>Zuizui\header</Filter>
     </ClInclude>
     <ClInclude Include="particles.h">
+      <Filter>Zuizui\header</Filter>
+    </ClInclude>
+    <ClInclude Include="shake.h">
       <Filter>Zuizui\header</Filter>
     </ClInclude>
   </ItemGroup>
