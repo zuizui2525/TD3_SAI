@@ -52,7 +52,7 @@ void DrawQuad(Quad quad) {
 		static_cast<int>(quad.rightTop.x), static_cast<int>(quad.rightTop.y),
 		static_cast<int>(quad.leftBottom.x), static_cast<int>(quad.leftBottom.y),
 		static_cast<int>(quad.rightBottom.x), static_cast<int>(quad.rightBottom.y),
-		static_cast<int>(quad.imagePos.x), static_cast<int>(quad.imagePos.y),
+		static_cast<int>(quad.imagePos.x * quad.size), static_cast<int>(quad.imagePos.y),
 		static_cast<int>(quad.imageWidth), static_cast<int>(quad.imageHeight),
 		static_cast<int>(quad.image),
 		static_cast<unsigned int>(quad.color)

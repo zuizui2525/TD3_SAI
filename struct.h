@@ -90,6 +90,7 @@ struct Sprite {
 //image: テクスチャハンドル
 //color: 色
 struct Quad {
+	float size;
 	Vector2<float> pos;
 	Vector2<float> radius;
 	Vector2<float> leftTop;
@@ -101,4 +102,8 @@ struct Quad {
 	int imageHeight;
 	int image;
 	int color;
+};
+
+struct Images {
+	int blocks = Novice::LoadTexture("./Resources./images./blocks.png");
 };
