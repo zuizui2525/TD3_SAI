@@ -6,6 +6,12 @@
 ///========================================================================
 //宣言時の例:Vector2<int>pos = {}; Vector2<float>pos = {};
 
+enum Size {
+	SMALL,
+	MEDIUM,
+	LARGE
+};
+
 template <typename T>
 struct Vector2 {
 	T x;
