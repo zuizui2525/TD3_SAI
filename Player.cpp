@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 
 Player::Player() {
+	// Quad
 	playerQuad_.size = 1;
 	playerQuad_.pos = { 80, 80 };
 	playerQuad_.radius = { 20, 20 };
@@ -16,12 +17,25 @@ Player::Player() {
 
 	prevPlayerQuad_ = playerQuad_;
 
+	// マップ上の番号
+	leftTopMap_ = { 1, 1 };
+	leftBottomMap_ = { 1, 1 };
+	rightTopMap_ = { 1, 1 };
+	rightBottomMap_ = { 1, 1 };
+
+	prevLeftTopMap_ = { 1, 1 };
+	prevLeftBottomMap_ = { 1, 1 };
+	prevRightTopMap_ = { 1, 1 };
+	prevRightBottomMap_ = { 1, 1 };
+
+	// speed
 	speed_ = 6;
 
-	canMoveLeft_ = true;
-	canMoveRight_ = true;
-	canMoveUp_ = true;
-	canMoveDown_ = true;
+	// フラグ
+	canMoveLeft_ = false;
+	canMoveRight_ = false;
+	canMoveUp_ = false;
+	canMoveDown_ = false;
 
 	isPressLeft_ = false;
 	isPressRight_ = false; 
@@ -61,53 +75,74 @@ void Player::Control(char* keys) {
 
 void Player::Collision(int map[mapRow][mapColumn]) {
 	// 判定を初期化
-	canMoveLeft_ = true;
-	canMoveRight_ = true;
-	canMoveUp_ = true;
-	canMoveDown_ = true;
+	canMoveLeft_ = false;
+	canMoveRight_ = false;
+	canMoveUp_ = false;
+	canMoveDown_ = false;
 
-	// 左
-	if (map[static_cast<int>(prevPlayerQuad_.leftTop.y / blockSize)]
-		[static_cast<int>(playerQuad_.leftTop.x / blockSize)] == 0
-		&&
-		map[static_cast<int>(prevPlayerQuad_.leftBottom.y / blockSize)]
-		[static_cast<int>(playerQuad_.leftBottom.x / blockSize)] == 0
-		) {
-		canMoveLeft_ = false;
+	// row(y)とcolumn(x)を求める
+	//現在の座標
+	leftTopMap_ = { 
+		static_cast<int>(playerQuad_.leftTop.x / blockSize), 
+		static_cast<int>(playerQuad_.leftTop.y / blockSize)
+	};
+	leftBottomMap_ = {
+		static_cast<int>(playerQuad_.leftBottom.x / blockSize),
+		static_cast<int>(playerQuad_.leftBottom.y / blockSize)
+	};
+	rightTopMap_ = {
+		static_cast<int>(playerQuad_.rightTop.x / blockSize),
+		static_cast<int>(playerQuad_.rightTop.y / blockSize)
+	};
+	rightBottomMap_ = {
+		static_cast<int>(playerQuad_.rightBottom.x / blockSize),
+		static_cast<int>(playerQuad_.rightBottom.y / blockSize)
+	};
+	//保存された座標
+	prevLeftTopMap_ = {
+		static_cast<int>(prevPlayerQuad_.leftTop.x / blockSize),
+		static_cast<int>(prevPlayerQuad_.leftTop.y / blockSize)
+	};
+	prevLeftBottomMap_ = {
+		static_cast<int>(prevPlayerQuad_.leftBottom.x / blockSize),
+		static_cast<int>(prevPlayerQuad_.leftBottom.y / blockSize)
+	};
+	prevRightTopMap_ = {
+		static_cast<int>(prevPlayerQuad_.rightTop.x / blockSize),
+		static_cast<int>(prevPlayerQuad_.rightTop.y / blockSize)
+	};
+	prevRightBottomMap_ = {
+		static_cast<int>(prevPlayerQuad_.rightBottom.x / blockSize),
+		static_cast<int>(prevPlayerQuad_.rightBottom.y / blockSize)
+	};
+
+	// 衝突判定
+	//左
+	if (map[prevLeftTopMap_.y][leftTopMap_.x] == 1
+		&& map[prevLeftBottomMap_.y][leftBottomMap_.x] == 1) {
+		canMoveLeft_ = true;
 	}
-	// 右
-	if (map[static_cast<int>(prevPlayerQuad_.rightTop.y / blockSize)]
-		[static_cast<int>(playerQuad_.rightTop.x / blockSize)] == 0
-		&&
-		map[static_cast<int>(prevPlayerQuad_.rightBottom.y / blockSize)]
-		[static_cast<int>(playerQuad_.rightBottom.x / blockSize)] == 0
-		) {
-		canMoveRight_ = false;
+	//右
+	if (map[prevRightTopMap_.y][rightTopMap_.x] == 1
+		&& map[prevRightBottomMap_.y][rightBottomMap_.x] == 1) {
+		canMoveRight_ = true;
 	}
-	// 上
-	if (map[static_cast<int>(playerQuad_.leftTop.y / blockSize)]
-		[static_cast<int>(prevPlayerQuad_.leftTop.x / blockSize)] == 0
-		&&
-		map[static_cast<int>(playerQuad_.rightTop.y / blockSize)]
-		[static_cast<int>(prevPlayerQuad_.rightTop.x / blockSize)] == 0
-		) {
-		canMoveUp_ = false;
+	//上
+	if (map[leftTopMap_.y][prevLeftTopMap_.x] == 1
+		&& map[rightTopMap_.y][prevRightTopMap_.x] == 1) {
+		canMoveUp_ = true;
 	}
-	// 下
-	if (map[static_cast<int>(playerQuad_.leftBottom.y / blockSize)]
-		[static_cast<int>(prevPlayerQuad_.leftBottom.x / blockSize)] == 0
-		&&
-		map[static_cast<int>(playerQuad_.rightBottom.y / blockSize)]
-		[static_cast<int>(prevPlayerQuad_.rightBottom.x / blockSize)] == 0
-		) {
-		canMoveDown_ = false;
+	//下
+	if (map[leftBottomMap_.y][prevLeftBottomMap_.x] == 1
+		&& map[rightBottomMap_.y][prevRightBottomMap_.x] == 1) {
+		canMoveDown_ = true;
 	}
 }
 
 void Player::Move() {
 	// 最終的な移動処理
 	
-	// 上方向への移動
+	//上方向への移動
 	if (canMoveUp_) {
 		if (!canMoveLeft_ || !canMoveRight_) {
 			if (isPressUp_) {
@@ -115,12 +150,12 @@ void Player::Move() {
 			}
 		}
 	} else {
-		// 押し戻し処理
+		//押し戻し処理
 		playerQuad_.pos.y = static_cast<float>(
-			(static_cast<int>(playerQuad_.leftTop.y) / blockSize + 1) * blockSize + playerQuad_.radius.y
+			prevLeftTopMap_.y * blockSize + prevPlayerQuad_.radius.y
 			);
 	}
-	// 下方向への移動
+	//下方向への移動
 	if (canMoveDown_) {
 		if (!canMoveLeft_ || !canMoveRight_) {
 			if (isPressDown_) {
@@ -128,12 +163,12 @@ void Player::Move() {
 			}
 		}
 	} else {
-		// 押し戻し処理
+		//押し戻し処理
 		playerQuad_.pos.y = static_cast<float>(
-			(static_cast<int>(playerQuad_.leftTop.y) / blockSize + 1) * blockSize - playerQuad_.radius.y
+			(prevLeftTopMap_.y + 1) * blockSize - prevPlayerQuad_.radius.y
 			);
 	}
-	// 左方向への移動
+	//左方向への移動
 	if (canMoveLeft_) {
 		if (!canMoveDown_ || !canMoveUp_) {
 			if (isPressLeft_) {
@@ -141,12 +176,12 @@ void Player::Move() {
 			}
 		}
 	} else {
-		// 押し戻し処理
-		playerQuad_.pos.y = static_cast<float>(
-			(static_cast<int>(playerQuad_.leftTop.x) / blockSize + 1) * blockSize + playerQuad_.radius.x
+		//押し戻し処理
+		playerQuad_.pos.x = static_cast<float>(
+			prevLeftTopMap_.x * blockSize + prevPlayerQuad_.radius.x
 			);
 	}
-	// 右方向への移動
+	//右方向への移動
 	if (canMoveRight_) {
 		if (!canMoveDown_ || !canMoveUp_) {
 			if (isPressRight_) {
@@ -154,10 +189,22 @@ void Player::Move() {
 			}
 		}
 	} else {
-		// 押し戻し処理
+		//押し戻し処理
 		playerQuad_.pos.x = static_cast<float>(
-			(static_cast<int>(playerQuad_.leftTop.x) / blockSize + 1) * blockSize - playerQuad_.radius.x
+			(prevLeftTopMap_.x + 1) * blockSize - prevPlayerQuad_.radius.x
 			);
+	}
+
+	// 範囲外の制限
+	if (playerQuad_.pos.x <= playerQuad_.radius.x) { 
+		playerQuad_.pos.x = playerQuad_.radius.x;
+	} else if (playerQuad_.pos.x >= mapColumn * blockSize - playerQuad_.radius.x) {
+		playerQuad_.pos.x = mapColumn * blockSize - playerQuad_.radius.x;
+	}
+	if (playerQuad_.pos.y <= playerQuad_.radius.y) {
+		playerQuad_.pos.y = playerQuad_.radius.y;
+	} else if (playerQuad_.pos.y >= mapRow * blockSize - playerQuad_.radius.y) {
+		playerQuad_.pos.y = mapRow * blockSize - playerQuad_.radius.y;
 	}
 }
 

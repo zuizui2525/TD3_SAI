@@ -7,22 +7,33 @@
 class Player {
 private:
 	// メンバ変数
-	int canMoveLeft_;              // 左に動けるかの判定
-	int canMoveRight_;             // 右に動けるかの判定
-	int canMoveUp_;                // 上に動けるかの判定
-	int canMoveDown_;              // 下に動けるかの判定
+	int canMoveLeft_;                // 左に動けるかの判定
+	int canMoveRight_;               // 右に動けるかの判定
+	int canMoveUp_;                  // 上に動けるかの判定
+	int canMoveDown_;                // 下に動けるかの判定
 
-	int isPressLeft_ = false;       // 左入力
-	int isPressRight_ = false;      // 右入力
-	int isPressUp_ = false;         // 上入力
-	int isPressDown_ = false;       // 下入力
+	int isPressLeft_ = false;        // 左入力
+	int isPressRight_ = false;       // 右入力
+	int isPressUp_ = false;          // 上入力
+	int isPressDown_ = false;        // 下入力
 
 public: 
 	// メンバ変数
-	Quad playerQuad_{};                // 座標
-	Quad prevPlayerQuad_{};            // 座標の保存
+	Quad playerQuad_{};              // 座標
+	Quad prevPlayerQuad_{};          // 座標の保存
 
-	float speed_;                  // 速さ
+
+	Vector2<int> leftTopMap_;        // マップ上の左上
+	Vector2<int> leftBottomMap_;     // マップ上の左下
+	Vector2<int> rightTopMap_;       // マップ上の右上
+	Vector2<int> rightBottomMap_;    // マップ上の右下
+
+	Vector2<int> prevLeftTopMap_;    // マップ上の左上
+	Vector2<int> prevLeftBottomMap_; // マップ上の左下
+	Vector2<int> prevRightTopMap_;   // マップ上の右上
+	Vector2<int> prevRightBottomMap_;// マップ上の右下
+
+	float speed_;                    // 速さ
 
     // メンバ関数
 

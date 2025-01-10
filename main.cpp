@@ -14,8 +14,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int const kWindowWidth = 1960;//windowの横幅
 	int const kWindowHeight = 1080;//windowの縦幅
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
-	//フルスクリーン表示
-	Novice::SetWindowMode(kFullscreen);
+	//フルスクリーン表示 ※これで少し重くなるっぽい
+	//Novice::SetWindowMode(kFullscreen);
 
 	Map* map = new Map();
 	Player* player = new Player();
