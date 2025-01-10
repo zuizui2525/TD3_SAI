@@ -59,7 +59,7 @@ void Player::Control(char* keys) {
 	}
 }
 
-void Player::Collision(int map[18][21]) {
+void Player::Collision(int map[mapRow][mapColumn]) {
 	// 判定を初期化
 	canMoveLeft_ = true;
 	canMoveRight_ = true;
@@ -67,38 +67,38 @@ void Player::Collision(int map[18][21]) {
 	canMoveDown_ = true;
 
 	// 左
-	if (map[static_cast<int>(prevPlayerQuad_.leftTop.y / 60)]
-		[static_cast<int>(playerQuad_.leftTop.x / 60)] == 0
+	if (map[static_cast<int>(prevPlayerQuad_.leftTop.y / blockSize)]
+		[static_cast<int>(playerQuad_.leftTop.x / blockSize)] == 0
 		&&
-		map[static_cast<int>(prevPlayerQuad_.leftBottom.y / 60)]
-		[static_cast<int>(playerQuad_.leftBottom.x / 60)] == 0
+		map[static_cast<int>(prevPlayerQuad_.leftBottom.y / blockSize)]
+		[static_cast<int>(playerQuad_.leftBottom.x / blockSize)] == 0
 		) {
 		canMoveLeft_ = false;
 	}
 	// 右
-	if (map[static_cast<int>(prevPlayerQuad_.rightTop.y / 60)]
-		[static_cast<int>(playerQuad_.rightTop.x / 60)] == 0
+	if (map[static_cast<int>(prevPlayerQuad_.rightTop.y / blockSize)]
+		[static_cast<int>(playerQuad_.rightTop.x / blockSize)] == 0
 		&&
-		map[static_cast<int>(prevPlayerQuad_.rightBottom.y / 60)]
-		[static_cast<int>(playerQuad_.rightBottom.x / 60)] == 0
+		map[static_cast<int>(prevPlayerQuad_.rightBottom.y / blockSize)]
+		[static_cast<int>(playerQuad_.rightBottom.x / blockSize)] == 0
 		) {
 		canMoveRight_ = false;
 	}
 	// 上
-	if (map[static_cast<int>(playerQuad_.leftTop.y / 60)]
-		[static_cast<int>(prevPlayerQuad_.leftTop.x / 60)] == 0
+	if (map[static_cast<int>(playerQuad_.leftTop.y / blockSize)]
+		[static_cast<int>(prevPlayerQuad_.leftTop.x / blockSize)] == 0
 		&&
-		map[static_cast<int>(playerQuad_.rightTop.y / 60)]
-		[static_cast<int>(prevPlayerQuad_.rightTop.x / 60)] == 0
+		map[static_cast<int>(playerQuad_.rightTop.y / blockSize)]
+		[static_cast<int>(prevPlayerQuad_.rightTop.x / blockSize)] == 0
 		) {
 		canMoveUp_ = false;
 	}
 	// 下
-	if (map[static_cast<int>(playerQuad_.leftBottom.y / 60)]
-		[static_cast<int>(prevPlayerQuad_.leftBottom.x / 60)] == 0
+	if (map[static_cast<int>(playerQuad_.leftBottom.y / blockSize)]
+		[static_cast<int>(prevPlayerQuad_.leftBottom.x / blockSize)] == 0
 		&&
-		map[static_cast<int>(playerQuad_.rightBottom.y / 60)]
-		[static_cast<int>(prevPlayerQuad_.rightBottom.x / 60)] == 0
+		map[static_cast<int>(playerQuad_.rightBottom.y / blockSize)]
+		[static_cast<int>(prevPlayerQuad_.rightBottom.x / blockSize)] == 0
 		) {
 		canMoveDown_ = false;
 	}
@@ -117,7 +117,7 @@ void Player::Move() {
 	} else {
 		// 押し戻し処理
 		playerQuad_.pos.y = static_cast<float>(
-			(static_cast<int>(playerQuad_.leftTop.y) / 60 + 1) * 60 + playerQuad_.radius.y
+			(static_cast<int>(playerQuad_.leftTop.y) / blockSize + 1) * blockSize + playerQuad_.radius.y
 			);
 	}
 	// 下方向への移動
@@ -130,7 +130,7 @@ void Player::Move() {
 	} else {
 		// 押し戻し処理
 		playerQuad_.pos.y = static_cast<float>(
-			(static_cast<int>(playerQuad_.leftTop.y) / 60 + 1) * 60 - playerQuad_.radius.y
+			(static_cast<int>(playerQuad_.leftTop.y) / blockSize + 1) * blockSize - playerQuad_.radius.y
 			);
 	}
 	// 左方向への移動
@@ -143,7 +143,7 @@ void Player::Move() {
 	} else {
 		// 押し戻し処理
 		playerQuad_.pos.y = static_cast<float>(
-			(static_cast<int>(playerQuad_.leftTop.x) / 60 + 1) * 60 + playerQuad_.radius.x
+			(static_cast<int>(playerQuad_.leftTop.x) / blockSize + 1) * blockSize + playerQuad_.radius.x
 			);
 	}
 	// 右方向への移動
@@ -156,7 +156,7 @@ void Player::Move() {
 	} else {
 		// 押し戻し処理
 		playerQuad_.pos.x = static_cast<float>(
-			(static_cast<int>(playerQuad_.leftTop.x) / 60 + 1) * 60 - playerQuad_.radius.x
+			(static_cast<int>(playerQuad_.leftTop.x) / blockSize + 1) * blockSize - playerQuad_.radius.x
 			);
 	}
 }

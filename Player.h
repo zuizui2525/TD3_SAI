@@ -2,6 +2,7 @@
 #include <Novice.h>
 #include "struct.h"
 #include "Zuizui.h"
+#include "map.h"
 
 class Player {
 private:
@@ -45,7 +46,7 @@ public:
 	/// 自機の衝突判定処理
 	/// </summary>
 	/// <param name="map">マップ情報の取得</param>
-	void Collision(int map[18][21]);
+	void Collision(int map[mapRow][mapColumn]);
 
 	/// <summary>
 	/// 自機の移動処理

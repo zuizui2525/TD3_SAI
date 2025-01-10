@@ -48,7 +48,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//更新
 		player->Update();
 		//判定
-		player->Collision(map);
+		player->Collision(map->map_);
 		//移動
 		player->Move();
 		//更新
