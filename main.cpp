@@ -14,8 +14,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int const kWindowWidth = 1960;//windowの横幅
 	int const kWindowHeight = 1080;//windowの縦幅
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
-	//フルスクリーン表示
-	Novice::SetWindowMode(kFullscreen);
+	//フルスクリーン表示 ※これで少し重くなるっぽい
+	//Novice::SetWindowMode(kFullscreen);
 
 	Map* map = new Map();
 	Player* player = new Player();
@@ -41,7 +41,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		
 		map->Update();
 
+		// プレイヤーの処理
+
+		//操作
 		player->Control(keys);
+		//更新
+		player->Update();
+		//判定
+		player->Collision(map->map_);
+		//移動
+		player->Move();
+		//更新
 		player->Update();
 
 		///
@@ -55,6 +65,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		map->Draw();
 
 		player->Draw();
+
+		Novice::ScreenPrintf(1000, 0, "%f  %f", player->playerQuad_.leftTop.y / 60, player->playerQuad_.leftTop.x / 60);
+		Novice::ScreenPrintf(1000, 20, "%f  %f", player->prevPlayerQuad_.leftTop.x, player->prevPlayerQuad_.leftTop.y);
 
 		///
 		/// ↑描画処理ここまで
