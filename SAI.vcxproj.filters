@@ -71,6 +71,9 @@
     <ClCompile Include="map.cpp">
       <Filter>game\map</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>game\player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -171,6 +174,9 @@
     </ClInclude>
     <ClInclude Include="mapCode.h">
       <Filter>game\map</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>game\player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
