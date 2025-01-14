@@ -31,7 +31,7 @@ public:
 	Player();
 
 	/// <summary>
-	/// デコンストラクタ
+	/// デストラクタ
 	/// </summary>
 	virtual ~Player();
 
