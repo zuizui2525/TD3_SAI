@@ -50,21 +50,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		map->Update();
 
 		// プレイヤーの処理
-
-		//更新
-		player->Update();
-		//判定
-		player->Collision(map->map_);
-		//移動
-		player->Move();
-		//更新
-		player->Update();
-
+		player->Update(keys, map->map_);
+		
 		//敵の処理
 		mie->Move(map->map_);
 		mie->Update();
-
-		player->Update(keys, map->map_);
 		
 		///
 		/// ↑更新処理ここまで
@@ -81,7 +71,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mie->Draw();
 
 		Novice::ScreenPrintf(1000, 0, "%f  %f", player->playerQuad_.leftTop.y / 60, player->playerQuad_.leftTop.x / 60);
-		Novice::ScreenPrintf(1000, 20, "%f  %f", player->prevPlayerQuad_.leftTop.x, player->prevPlayerQuad_.leftTop.y);
 
 		///
 		/// ↑描画処理ここまで
