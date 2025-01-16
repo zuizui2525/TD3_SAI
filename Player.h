@@ -7,6 +7,8 @@
 class Player {
 public: 
 	// メンバ変数
+	Images image_;                   //画像
+
 	Quad playerQuad_{};              // 座標
 
 	Vector2<int> leftTopMap_;        // マップ上の左上

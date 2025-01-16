@@ -11,8 +11,8 @@ Mie::Mie(float x, float y) {
 	enemy_.imagePos = { 0,0 };
 	enemy_.imageWidth = 60;
 	enemy_.imageHeight = 60;
-	enemy_.image = 0;
-	enemy_.color = PURPLE;
+	enemy_.image = image_.enemy_mie;
+	enemy_.color = WHITE;
 	speed_ = kSpeed;
 	isAlive_ = true;
 	next_ = {};
