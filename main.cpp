@@ -1,9 +1,13 @@
 #include <Novice.h>
+#include <time.h>
 #include "struct.h"
 #include "Zuizui.h"
 #include "map.h"
 #include "mapCode.h"
 #include "Player.h"
+#include "Enemy.h"
+#include "Mie.h"
+#include "Moo.h"
 
 const char kWindowTitle[] = "ゲームタイトル";
 
@@ -15,10 +19,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int const kWindowHeight = 1080;//windowの縦幅
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
 	//フルスクリーン表示 ※これで少し重くなるっぽい
-	//Novice::SetWindowMode(kFullscreen);
+	Novice::SetWindowMode(kFullscreen);
+
+	//確率(rand)
+	unsigned int currentTime = unsigned(time(nullptr));//乱数
+	srand(currentTime);
 
 	Map* map = new Map();
 	Player* player = new Player();
+	Mie* mie = new Mie(10,10);
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -53,6 +62,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//更新
 		player->Update();
 
+		//敵の処理
+		mie->Move(map->map_);
+		mie->Update();
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -64,6 +77,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		map->Draw();
 
 		player->Draw();
+
+		mie->Draw();
 
 		Novice::ScreenPrintf(1000, 0, "%f  %f", player->playerQuad_.leftTop.y / 60, player->playerQuad_.leftTop.x / 60);
 		Novice::ScreenPrintf(1000, 20, "%f  %f", player->prevPlayerQuad_.leftTop.x, player->prevPlayerQuad_.leftTop.y);

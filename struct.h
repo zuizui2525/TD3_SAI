@@ -6,10 +6,19 @@
 ///========================================================================
 //宣言時の例:Vector2<int>pos = {}; Vector2<float>pos = {};
 
+//大きさ
 enum Size {
 	SMALL,
 	MEDIUM,
 	LARGE
+};
+
+//方向
+enum Direction {
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
 };
 
 template <typename T>
@@ -24,6 +33,15 @@ struct Matrix2x2 {
 
 struct Matrix3x3 {
 	float m[3][3];
+};
+
+//4頂点
+template <typename T>
+struct Vertices4 {
+	Vector2<T> leftTop;
+	Vector2<T> rightTop;
+	Vector2<T> leftBottom;
+	Vector2<T> rightBottom;
 };
 
 //[ 線の構造体 ]

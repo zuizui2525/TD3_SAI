@@ -74,6 +74,12 @@
     <ClCompile Include="Player.cpp">
       <Filter>game\player</Filter>
     </ClCompile>
+    <ClCompile Include="Mie.cpp">
+      <Filter>game\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Moo.cpp">
+      <Filter>game\enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -177,6 +183,15 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>game\player</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>game\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Mie.h">
+      <Filter>game\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Moo.h">
+      <Filter>game\enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
