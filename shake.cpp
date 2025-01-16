@@ -50,5 +50,5 @@ void Shake::Update() {
 			isShake_ = false;
 		}
 	}
-	Novice::ScreenPrintf(0, 0, "timer:%d", timer_);
+	//Novice::ScreenPrintf(0, 0, "timer:%d", timer_);
 }

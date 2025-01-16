@@ -38,7 +38,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		
 		map->changeTheMap(map1);
-		
 		map->Update();
 
 		// プレイヤーの処理

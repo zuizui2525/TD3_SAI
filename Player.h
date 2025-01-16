@@ -42,7 +42,7 @@ public:
 	Player();
 
 	/// <summary>
-	/// デコンストラクタ
+	/// デストラクタ
 	/// </summary>
 	~Player();
 
