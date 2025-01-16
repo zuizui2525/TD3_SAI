@@ -51,8 +51,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		// プレイヤーの処理
 
-		//操作
-		player->Control(keys);
 		//更新
 		player->Update();
 		//判定
@@ -66,6 +64,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mie->Move(map->map_);
 		mie->Update();
 
+		player->Update(keys, map->map_);
+		
 		///
 		/// ↑更新処理ここまで
 		///
