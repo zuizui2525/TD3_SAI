@@ -14,7 +14,7 @@ Player::Player() {
 	playerQuad_.imagePos = { 0, 0 };
 	playerQuad_.imageWidth = 60;
 	playerQuad_.imageHeight = 60;
-	playerQuad_.image = 0;
+	playerQuad_.image = image_.player;
 	playerQuad_.color = WHITE;
 
 	// マップ上の番号
