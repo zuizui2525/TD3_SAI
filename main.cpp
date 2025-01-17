@@ -26,7 +26,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	srand(currentTime);
 
 	Map* map = new Map();
-	Player* player = new Player();
+	Player* player = new Player(*map, 1, 1);
 	Mie* mie = new Mie(11,10);
 	Mie* mie2 = new Mie(13, 10);
 
@@ -47,11 +47,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 		
-		map->changeTheMap(map1);
+		if (keys[DIK_SPACE]) { // 軌跡反映用(仮)
+			map->changeTheMap(map1);
+		}
 		map->Update();
 
 		// プレイヤーの処理
-		player->Update(keys, map->map_);
+		player->Update(keys);
 		
 		//敵の処理
 		mie->Move(map->map_);
@@ -74,8 +76,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mie->Draw();
 		mie2->Draw();
 
-		Novice::ScreenPrintf(1000, 0, "%f  %f", player->playerQuad_.leftTop.y / 60, player->playerQuad_.leftTop.x / 60);
-
+		Novice::ScreenPrintf(1000, 0, "%d  %d", player->mapPrev_.leftTop.y, player->mapPrev_.leftTop.x);
+		for (int y = 0; y < mapRow; y++) {
+			for (int x = 0; x < mapColumn; x++) {
+				Novice::ScreenPrintf(1300 + x * 20, y * 20, "%d", map->map_[y][x]);
+			}
+		}
 		///
 		/// ↑描画処理ここまで
 		///
