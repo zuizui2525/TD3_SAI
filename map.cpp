@@ -54,3 +54,9 @@ void Map::Draw() {
 		}
 	}
 }
+
+void Map::SetTile(int row, int column, int tileType) {
+	if (row >= 0 && row < mapRow && column >= 0 && column < mapColumn) {
+		map_[row][column] = tileType;  // 軌跡を指定位置に配置
+	}
+}
