@@ -7,7 +7,9 @@
 class Player {
 public: 
 	// メンバ変数
-	Quad playerQuad_{};              // 座標	
+	Images image_;                   //画像
+
+	Quad playerQuad_{};              // 座標
 
 	Vertices4<int> currentMap_;      // マップ上の座標
 

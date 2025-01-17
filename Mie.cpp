@@ -11,8 +11,8 @@ Mie::Mie(float x, float y) {
 	enemy_.imagePos = { 0,0 };
 	enemy_.imageWidth = 60;
 	enemy_.imageHeight = 60;
-	enemy_.image = 0;
-	enemy_.color = PURPLE;
+	enemy_.image = image_.enemy_mie;
+	enemy_.color = WHITE;
 	speed_ = kSpeed;
 	isAlive_ = true;
 	next_ = {};
@@ -30,6 +30,7 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 	//AI部分①
 	if (moveCounter_ >= kMoveCounter) {
 		moveCounter_ = 0;
+		prevDirection_ = direction_;
 
 		//仮のposを進める
 		//(stop_)
@@ -51,29 +52,7 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 		advance_.rightBottom.x = static_cast<int>((enemy_.pos.x + enemy_.radius.x - 1.0f + speed_) / enemy_.size);
 		advance_.rightBottom.y = static_cast<int>((enemy_.pos.y + enemy_.radius.y - 1.0f + speed_) / enemy_.size);
 
-		if (map[advance_.leftTop.y][stop_.leftTop.x] == 0 && map[advance_.rightTop.y][stop_.rightTop.x] == 0 && map[advance_.leftBottom.y][stop_.leftBottom.x] == 0 && map[advance_.rightBottom.y][stop_.rightBottom.x] == 0) {
-			Novice::ScreenPrintf(0, 40, "UP,DOWN,LEFT,RIGHT[Y,advance]");
-			randNumber_ = rand() % 2;
-			switch (randNumber_) {
-			case 0:
-				direction_ = LEFT;
-				break;
-			case 1:
-				direction_ = RIGHT;
-				break;
-			}
-		}else if (map[stop_.leftTop.y][advance_.leftTop.x] == 0 && map[stop_.rightTop.y][advance_.rightTop.x] == 0 && map[stop_.leftBottom.y][advance_.leftBottom.x] == 0 && map[stop_.rightBottom.y][advance_.rightBottom.x] == 0) {
-			Novice::ScreenPrintf(0, 40, "UP,DOWN,LEFT,RIGHT[X,advance]");
-			randNumber_ = rand() % 2;
-			switch (randNumber_) {
-			case 0:
-				direction_ = UP;
-				break;
-			case 1:
-				direction_ = DOWN;
-				break;
-			}
-		} else if (map[advance_.leftTop.y][advance_.leftTop.x] == 0 && map[advance_.rightTop.y][stop_.rightTop.x] == 0 && map[stop_.leftBottom.y][advance_.leftBottom.x] == 0) {
+		if (map[advance_.leftTop.y][advance_.leftTop.x] == 0 && map[advance_.rightTop.y][stop_.rightTop.x] == 0 && map[stop_.leftBottom.y][advance_.leftBottom.x] == 0) {
 			Novice::ScreenPrintf(0, 40, "UP,LEFT");
 			randNumber_ = rand() % 2;
 			switch (randNumber_) {
@@ -115,6 +94,36 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 				break;
 			case 1:
 				direction_ = LEFT;
+				break;
+			}
+		} else if (map[advance_.leftTop.y][stop_.leftTop.x] == 0 && map[advance_.rightTop.y][stop_.rightTop.x] == 0 && map[advance_.leftBottom.y][stop_.leftBottom.x] == 0 && map[advance_.rightBottom.y][stop_.rightBottom.x] == 0) {
+			Novice::ScreenPrintf(0, 40, "UP,DOWN,LEFT,RIGHT[Y,advance]");
+			randNumber_ = rand() % 2;
+			switch (randNumber_) {
+			case 0:
+				if (prevDirection_ != RIGHT) {
+					direction_ = LEFT;
+				}
+				break;
+			case 1:
+				if (prevDirection_ != LEFT) {
+					direction_ = RIGHT;
+				}
+				break;
+			}
+		} else if (map[stop_.leftTop.y][advance_.leftTop.x] == 0 && map[stop_.rightTop.y][advance_.rightTop.x] == 0 && map[stop_.leftBottom.y][advance_.leftBottom.x] == 0 && map[stop_.rightBottom.y][advance_.rightBottom.x] == 0) {
+			Novice::ScreenPrintf(0, 40, "UP,DOWN,LEFT,RIGHT[X,advance]");
+			randNumber_ = rand() % 2;
+			switch (randNumber_) {
+			case 0:
+				if (prevDirection_ != DOWN) {
+					direction_ = UP;
+				}
+				break;
+			case 1:
+				if (prevDirection_ != UP) {
+					direction_ = DOWN;
+				}
 				break;
 			}
 		} else if (map[advance_.leftTop.y][stop_.leftTop.x] == 0 && map[advance_.rightTop.y][stop_.rightTop.x] == 0) {
@@ -178,16 +187,24 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 			randNumber_ = rand() % 4;
 			switch (randNumber_) {
 			case 0:
-				direction_ = UP;
+				if (prevDirection_ != DOWN) {
+					direction_ = UP;
+				}
 				break;
 			case 1:
-				direction_ = DOWN;
+				if (prevDirection_ != UP) {
+					direction_ = DOWN;
+				}
 				break;
 			case 2:
-				direction_ = LEFT;
+				if (prevDirection_ != RIGHT) {
+					direction_ = LEFT;
+				}
 				break;
 			case 3:
-				direction_ = RIGHT;
+				if (prevDirection_ != LEFT) {
+					direction_ = RIGHT;
+				}
 				break;
 			}
 		}

@@ -15,6 +15,7 @@ class Enemy {
 protected:
 	Images image_;
 	Direction direction_;
+	Direction prevDirection_;
 	Vertices4<int> next_;
 	Vertices4<int> stop_;
 	Vertices4<int> advance_;
