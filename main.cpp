@@ -26,7 +26,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	srand(currentTime);
 
 	Map* map = new Map();
-	Player* player = new Player();
+	Player* player = new Player(*map, 1, 1);
 	Mie* mie = new Mie(11,10);
 	Mie* mie2 = new Mie(13, 10);
 
@@ -51,7 +51,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		map->Update();
 
 		// プレイヤーの処理
-		player->Update(keys, map->map_);
+		player->Update(keys);
 		
 		//敵の処理
 		mie->Move(map->map_);

@@ -19,4 +19,5 @@ public:
 	void changeTheMap(int upload[mapRow][mapColumn]);
 	void Update();
 	void Draw();
+	void SetTile(int row, int column, int tileType);  // 指定位置にマップチップを配置
 };

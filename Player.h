@@ -11,20 +11,18 @@ public:
 
 	Quad playerQuad_{};              // 座標
 
-	Vector2<int> leftTopMap_;        // マップ上の左上
-	Vector2<int> leftBottomMap_;     // マップ上の左下
-	Vector2<int> rightTopMap_;       // マップ上の右上
-	Vector2<int> rightBottomMap_;    // マップ上の右下
+	Vertices4<int> currentMap_;      // マップ上の座標
 
-	Vector2<int> nextLeftTopMap_;    // マップ上の左上
-	Vector2<int> nextLeftBottomMap_; // マップ上の左下
-	Vector2<int> nextRightTopMap_;   // マップ上の右上
-	Vector2<int> nextRightBottomMap_;// マップ上の右下
+	Vertices4<int> prevMap_;         // 保存したマップ上の座標
+
+	Vertices4<int> nextMap_;         // 次のマップ上の座標
+
+private:
+
+	Map& m_;                       // プレイヤーが移動するマップの参照
 
 	float speed_;                    // 速さ
 
-private:
-	
 	int canMoveLeft_;                // 左に動けるかの判定(SE用)
 	int canMoveRight_;               // 右に動けるかの判定(SE用)
 	int canMoveUp_;                  // 上に動けるかの判定(SE用)
@@ -41,7 +39,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Player();
+	Player(Map& m, int startX, int startY);
 
 	/// <summary>
 	/// デストラクタ
@@ -49,10 +47,15 @@ public:
 	~Player();
 
 	/// <summary>
+	/// 通った後に軌跡ブロックを配置
+	/// </summary>
+	void LeaveTrail();
+
+	/// <summary>
 	/// 自機の操作処理
 	/// </summary>
 	/// <param name="keys">キー入力の取得</param>
-	void Update(char* keys, int map[mapRow][mapColumn]);
+	void Update(char* keys);
 
 	/// <summary>
 	/// 自機の描画処理
