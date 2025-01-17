@@ -11,17 +11,19 @@ public:
 
 	Quad playerQuad_{};              // 座標
 
-	Vertices4<int> currentMap_;      // マップ上の座標
+	Vertices4<int> mapCurrent_;      // マップ上の座標
 
-	Vertices4<int> prevMap_;         // 保存したマップ上の座標
+	Vertices4<int> mapPrev_;         // 保存したマップ上の座標
 
-	Vertices4<int> nextMap_;         // 次のマップ上の座標
+	Vertices4<int> mapNext_;         // 次のマップ上の座標
 
 private:
 
 	Map& m_;                       // プレイヤーが移動するマップの参照
 
 	float speed_;                    // 速さ
+
+	Vector2<float> moveLength;       // 移動量
 
 	int canMoveLeft_;                // 左に動けるかの判定(SE用)
 	int canMoveRight_;               // 右に動けるかの判定(SE用)
@@ -39,17 +41,15 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
+	/// <param name="m">参照マップ(現在のマップ)</param>
+	/// <param name="startX">初期地点X(マップ上の座標)</param>
+	/// <param name="startY">初期地点Y(マップ上の座標)</param>
 	Player(Map& m, int startX, int startY);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
 	~Player();
-
-	/// <summary>
-	/// 通った後に軌跡ブロックを配置
-	/// </summary>
-	void LeaveTrail();
 
 	/// <summary>
 	/// 自機の操作処理
@@ -68,5 +68,10 @@ private:
 	/// 自機の4点の計算処理
 	/// </summary>
 	void QuadCalculation();
+
+	/// <summary>
+	/// 通った後に軌跡ブロックを配置
+	/// </summary>
+	void LeaveTrail();
 };
 

@@ -1,4 +1,5 @@
 ﻿#include "Player.h"
+#include <math.h>
 
 // public
 
@@ -18,23 +19,22 @@ Player::Player(Map& m, int startX, int startY) : m_(m) {
 	playerQuad_.color = WHITE;
 
 	// マップ上の番号
-	currentMap_.leftTop = { startX, startY };
-	currentMap_.leftBottom = { startX, startY };
-	currentMap_.rightTop = { startX, startY };
-	currentMap_.rightBottom = { startX, startY };
+	mapCurrent_.leftTop = { startX, startY };
+	mapCurrent_.leftBottom = { startX, startY };
+	mapCurrent_.rightTop = { startX, startY };
+	mapCurrent_.rightBottom = { startX, startY };
 
-	prevMap_.leftTop = currentMap_.leftTop;
-	prevMap_.leftBottom = currentMap_.leftBottom;
-	prevMap_.rightTop = currentMap_.rightTop;
-	prevMap_.rightBottom = currentMap_.rightBottom;
+	mapPrev_ = mapCurrent_;
 
-	nextMap_.leftTop = { 0, 0 };
-	nextMap_.leftBottom = { 0, 0 };
-	nextMap_.rightTop = { 0, 0 };
-	nextMap_.rightBottom = { 0, 0 };
+	mapNext_.leftTop = { 0, 0 };
+	mapNext_.leftBottom = { 0, 0 };
+	mapNext_.rightTop = { 0, 0 };
+	mapNext_.rightBottom = { 0, 0 };
 
 	// speed
 	speed_ = 6;
+
+	moveLength = { 0, 0 };
 
 	// フラグ
 	canMoveLeft_ = false;
@@ -50,10 +50,6 @@ Player::Player(Map& m, int startX, int startY) : m_(m) {
 
 Player::~Player() {}
 
-void Player::LeaveTrail() {
-	m_.SetTile(prevMap_.leftTop.y, prevMap_.leftTop.x, 2);  // プレイヤーが通った場所に軌跡を配置
-}
-
 void Player::Update(char* keys) {
 	// 操作を初期化
 	isPressLeft_ = false;
@@ -67,21 +63,18 @@ void Player::Update(char* keys) {
 	// プレイヤーを仮に進ませる
 	if (keys[DIK_W] && !keys[DIK_S]) {
 		//マップチップ上の座標
-		nextMap_.leftTop.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x) / blockSize);
-		nextMap_.leftTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y - speed_) / blockSize);
-		nextMap_.rightTop.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f) / blockSize);
-		nextMap_.rightTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y - speed_) / blockSize);
+		mapNext_.leftTop.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x) / blockSize);
+		mapNext_.leftTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y - speed_) / blockSize);
+		mapNext_.rightTop.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f) / blockSize);
+		mapNext_.rightTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y - speed_) / blockSize);
 
 		//ブロックが無ければ進む
-		if (m_.map_[nextMap_.leftTop.y][nextMap_.leftTop.x] == 1
-			&& m_.map_[nextMap_.rightTop.y][nextMap_.rightTop.x] == 1) {
+		if (m_.map_[mapNext_.leftTop.y][mapNext_.leftTop.x] == 1
+			&& m_.map_[mapNext_.rightTop.y][mapNext_.rightTop.x] == 1) {
 			playerQuad_.pos.y -= speed_;
 
-			// マップ座標の保存
-			prevMap_.leftTop.x = currentMap_.leftTop.x;
-			prevMap_.leftTop.y = currentMap_.leftTop.y;
-			prevMap_.rightTop.x = currentMap_.rightTop.x;
-			prevMap_.rightTop.y = currentMap_.rightTop.y;
+			// 移動量の更新
+			moveLength.y -= speed_;
 
 			canMoveUp_ = true; // SE用
 		} else {
@@ -93,21 +86,18 @@ void Player::Update(char* keys) {
 
 	if (keys[DIK_S] && !keys[DIK_W]) {
 		//マップチップ上の座標
-		nextMap_.leftBottom.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x) / blockSize);
-		nextMap_.leftBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f + speed_) / blockSize);
-		nextMap_.rightBottom.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f) / blockSize);
-		nextMap_.rightBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f + speed_) / blockSize);
+		mapNext_.leftBottom.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x) / blockSize);
+		mapNext_.leftBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f + speed_) / blockSize);
+		mapNext_.rightBottom.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f) / blockSize);
+		mapNext_.rightBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f + speed_) / blockSize);
 		
 		//ブロックが無ければ進む
-		if (m_.map_[nextMap_.leftBottom.y][nextMap_.leftBottom.x] == 1
-			&& m_.map_[nextMap_.rightBottom.y][nextMap_.rightBottom.x] == 1) {
+		if (m_.map_[mapNext_.leftBottom.y][mapNext_.leftBottom.x] == 1
+			&& m_.map_[mapNext_.rightBottom.y][mapNext_.rightBottom.x] == 1) {
 			playerQuad_.pos.y += speed_;
 
-			// マップ座標の保存
-			prevMap_.leftBottom.x = currentMap_.leftBottom.x;
-			prevMap_.leftBottom.y = currentMap_.leftBottom.y;
-			prevMap_.rightBottom.x = currentMap_.rightBottom.x;
-			prevMap_.rightBottom.y = currentMap_.rightBottom.y;
+			// 移動量の更新
+			moveLength.y += speed_;
 
 			canMoveDown_ = true;
 		} else {
@@ -119,21 +109,18 @@ void Player::Update(char* keys) {
 
 	if (keys[DIK_A] && !keys[DIK_D]) {
 		//マップチップ上の座標
-		nextMap_.leftTop.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x - speed_) / blockSize);
-		nextMap_.leftTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y) / blockSize);
-		nextMap_.leftBottom.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x - speed_) / blockSize);
-		nextMap_.leftBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f) / blockSize);
+		mapNext_.leftTop.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x - speed_) / blockSize);
+		mapNext_.leftTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y) / blockSize);
+		mapNext_.leftBottom.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x - speed_) / blockSize);
+		mapNext_.leftBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f) / blockSize);
 
 		//ブロックが無ければ進む
-		if (m_.map_[nextMap_.leftTop.y][nextMap_.leftTop.x] == 1
-			&& m_.map_[nextMap_.leftBottom.y][nextMap_.leftBottom.x] == 1) {
+		if (m_.map_[mapNext_.leftTop.y][mapNext_.leftTop.x] == 1
+			&& m_.map_[mapNext_.leftBottom.y][mapNext_.leftBottom.x] == 1) {
 			playerQuad_.pos.x -= speed_;
 
-			// マップ座標の保存
-			prevMap_.leftTop.x = currentMap_.leftTop.x;
-			prevMap_.leftTop.y = currentMap_.leftTop.y;
-			prevMap_.leftBottom.x = currentMap_.leftBottom.x;
-			prevMap_.leftBottom.y = currentMap_.leftBottom.y;
+			// 移動量の更新
+			moveLength.x -= speed_;
 
 			canMoveLeft_ = true;
 		} else {
@@ -145,21 +132,18 @@ void Player::Update(char* keys) {
 	
 	if (keys[DIK_D] && !keys[DIK_A]) {
 		//マップチップ上の座標
-		nextMap_.rightTop.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f + speed_) / blockSize);
-		nextMap_.rightTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y) / blockSize);
-		nextMap_.rightBottom.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f + speed_) / blockSize);
-		nextMap_.rightBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f) / blockSize);
+		mapNext_.rightTop.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f + speed_) / blockSize);
+		mapNext_.rightTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y) / blockSize);
+		mapNext_.rightBottom.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f + speed_) / blockSize);
+		mapNext_.rightBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f) / blockSize);
 		
 		//ブロックが無ければ進む
-		if (m_.map_[nextMap_.rightTop.y][nextMap_.rightTop.x] == 1
-			&& m_.map_[nextMap_.rightBottom.y][nextMap_.rightBottom.x] == 1) {
+		if (m_.map_[mapNext_.rightTop.y][mapNext_.rightTop.x] == 1
+			&& m_.map_[mapNext_.rightBottom.y][mapNext_.rightBottom.x] == 1) {
 			playerQuad_.pos.x += speed_;
-
-			// マップ座標の保存
-			prevMap_.rightTop.x = currentMap_.rightTop.x;
-			prevMap_.rightTop.y = currentMap_.rightTop.y;
-			prevMap_.rightBottom.x = currentMap_.rightBottom.x;
-			prevMap_.rightBottom.y = currentMap_.rightBottom.y;
+			
+			// 移動量の更新
+			moveLength.x += speed_;
 
 			canMoveRight_ = true;
 		} else {
@@ -185,12 +169,7 @@ void Player::Update(char* keys) {
 	QuadCalculation();
 
 	//プレイヤーが現在のマスから移動したら軌跡を残す
-	if (m_.map_[prevMap_.leftTop.y][prevMap_.leftTop.x] != m_.map_[currentMap_.leftTop.y][currentMap_.leftTop.x]
-		&& m_.map_[prevMap_.leftBottom.y][prevMap_.leftBottom.x] != m_.map_[currentMap_.leftBottom.y][currentMap_.leftBottom.x]
-		&& m_.map_[prevMap_.rightTop.y][prevMap_.rightTop.x] != m_.map_[currentMap_.rightTop.y][currentMap_.rightTop.x]
-		&& m_.map_[prevMap_.rightBottom.y][prevMap_.rightBottom.x] != m_.map_[currentMap_.rightBottom.y][currentMap_.rightBottom.x]) {
-		LeaveTrail();
-	}
+	LeaveTrail();
 }
 
 void Player::Draw() {
@@ -208,4 +187,32 @@ void Player::QuadCalculation() {
 	playerQuad_.rightTop.y = playerQuad_.pos.y - playerQuad_.radius.y;
 	playerQuad_.rightBottom.x = playerQuad_.pos.x + playerQuad_.radius.x - 1.0f;
 	playerQuad_.rightBottom.y = playerQuad_.pos.y + playerQuad_.radius.y - 1.0f;
+}
+
+void Player::LeaveTrail() {
+	//プレイヤーが現在のマスから移動したら軌跡を残す
+	if (fabs(moveLength.x) >= blockSize || fabs(moveLength.y) >= blockSize) {
+		// xまたはyの移動量が60を超えた場合、軌跡を残す
+
+		// 移動前の位置に軌跡を残す
+		m_.SetTile(mapPrev_.leftTop.y, mapPrev_.leftTop.x, 2);  // プレイヤーが通った場所に軌跡を配置
+
+		// x方向の移動
+		if (fabs(moveLength.x) >= blockSize) {
+			int tileMoves = static_cast<int>(moveLength.x / blockSize); // x方向の移動タイル数
+			mapCurrent_.leftTop.x += tileMoves; // x座標を更新
+			moveLength.x -= tileMoves * blockSize; // 余剰分を残す
+			// 移動後の位置を次回の移動前の位置として更新
+			mapPrev_.leftTop.x = mapCurrent_.leftTop.x;
+		}
+
+		// y方向の移動
+		if (fabs(moveLength.y) >= blockSize) {
+			int tileMoves = static_cast<int>(moveLength.y / blockSize); // y方向の移動タイル数
+			mapCurrent_.leftTop.y += tileMoves; // y座標を更新
+			moveLength.y -= tileMoves * blockSize; // 余剰分を残す
+			// 移動後の位置を次回の移動前の位置として更新
+			mapPrev_.leftTop.y = mapCurrent_.leftTop.y;
+		}
+	}
 }
