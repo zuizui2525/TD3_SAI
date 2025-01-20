@@ -19,7 +19,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int const kWindowHeight = 1080;//windowの縦幅
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
 	//フルスクリーン表示 ※これで少し重くなるっぽい
-	Novice::SetWindowMode(kFullscreen);
+	//Novice::SetWindowMode(kFullscreen);
 
 	//確率(rand)
 	unsigned int currentTime = unsigned(time(nullptr));//乱数
@@ -76,7 +76,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mie->Draw();
 		mie2->Draw();
 
-		Novice::ScreenPrintf(1000, 0, "%d  %d", player->mapPrev_.leftTop.y, player->mapPrev_.leftTop.x);
 		for (int y = 0; y < mapRow; y++) {
 			for (int x = 0; x < mapColumn; x++) {
 				Novice::ScreenPrintf(1300 + x * 20, y * 20, "%d", map->map_[y][x]);
