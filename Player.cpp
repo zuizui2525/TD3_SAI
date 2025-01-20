@@ -34,7 +34,8 @@ Player::Player(Map& m, int startX, int startY) : m_(m) {
 	// speed
 	speed_ = 6;
 
-	moveLength = { 0, 0 };
+	// 軌跡用
+	moveLength_ = { 0, 0 };
 
 	// フラグ
 	canMoveLeft_ = false;
@@ -74,7 +75,7 @@ void Player::Update(char* keys) {
 			playerQuad_.pos.y -= speed_;
 
 			// 移動量の更新
-			moveLength.y -= speed_;
+			moveLength_.y -= speed_;
 
 			canMoveUp_ = true; // SE用
 		} else {
@@ -97,7 +98,7 @@ void Player::Update(char* keys) {
 			playerQuad_.pos.y += speed_;
 
 			// 移動量の更新
-			moveLength.y += speed_;
+			moveLength_.y += speed_;
 
 			canMoveDown_ = true;
 		} else {
@@ -120,7 +121,7 @@ void Player::Update(char* keys) {
 			playerQuad_.pos.x -= speed_;
 
 			// 移動量の更新
-			moveLength.x -= speed_;
+			moveLength_.x -= speed_;
 
 			canMoveLeft_ = true;
 		} else {
@@ -143,7 +144,7 @@ void Player::Update(char* keys) {
 			playerQuad_.pos.x += speed_;
 			
 			// 移動量の更新
-			moveLength.x += speed_;
+			moveLength_.x += speed_;
 
 			canMoveRight_ = true;
 		} else {
@@ -190,26 +191,26 @@ void Player::QuadCalculation() {
 
 void Player::LeaveTrail() {
 	//プレイヤーが現在のマスから移動したら軌跡を残す
-	if (fabs(moveLength.x) >= blockSize || fabs(moveLength.y) >= blockSize) {
+	if (fabs(moveLength_.x) >= blockSize || fabs(moveLength_.y) >= blockSize) {
 		// xまたはyの移動量が60を超えた場合、軌跡を残す
 
 		// 移動前の位置に軌跡を残す
 		m_.SetTile(mapPrev_.leftTop.y, mapPrev_.leftTop.x, 2);  // プレイヤーが通った場所に軌跡を配置
 
 		// x方向の移動
-		if (fabs(moveLength.x) >= blockSize) {
-			int tileMoves = static_cast<int>(moveLength.x / blockSize); // x方向の移動タイル数
+		if (fabs(moveLength_.x) >= blockSize) {
+			int tileMoves = static_cast<int>(moveLength_.x / blockSize); // x方向の移動タイル数
 			mapCurrent_.leftTop.x += tileMoves; // x座標を更新
-			moveLength.x -= tileMoves * blockSize; // 余剰分を残す
+			moveLength_.x -= tileMoves * blockSize; // 余剰分を残す
 			// 移動後の位置を次回の移動前の位置として更新
 			mapPrev_.leftTop.x = mapCurrent_.leftTop.x;
 		}
 
 		// y方向の移動
-		if (fabs(moveLength.y) >= blockSize) {
-			int tileMoves = static_cast<int>(moveLength.y / blockSize); // y方向の移動タイル数
+		if (fabs(moveLength_.y) >= blockSize) {
+			int tileMoves = static_cast<int>(moveLength_.y / blockSize); // y方向の移動タイル数
 			mapCurrent_.leftTop.y += tileMoves; // y座標を更新
-			moveLength.y -= tileMoves * blockSize; // 余剰分を残す
+			moveLength_.y -= tileMoves * blockSize; // 余剰分を残す
 			// 移動後の位置を次回の移動前の位置として更新
 			mapPrev_.leftTop.y = mapCurrent_.leftTop.y;
 		}
