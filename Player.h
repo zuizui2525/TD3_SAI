@@ -19,11 +19,11 @@ public:
 
 private:
 
-	Map& m_;                       // プレイヤーが移動するマップの参照
+	Map& m_;                         // プレイヤーが移動するマップの参照
 
 	float speed_;                    // 速さ
 
-	Vector2<float> moveLength;       // 移動量
+	Vector2<float> moveLength_;      // 移動量
 
 	int canMoveLeft_;                // 左に動けるかの判定(SE用)
 	int canMoveRight_;               // 右に動けるかの判定(SE用)
