@@ -1,4 +1,4 @@
-#include "Moo.h"
+ï»¿#include "Moo.h"
 
 Moo::Moo(float x, float y) {
 	enemy_.size = kSize;
@@ -27,23 +27,23 @@ Moo::~Moo() {
 }
 
 void Moo::Move(int map[mapRow][mapColumn]) {
-	//AI•”•ª‡@
+	//AIéƒ¨åˆ†â‘ 
 	if (moveCounter_ >= kMoveCounter) {
 		moveCounter_ = 0;
-		//‹——£ŒvZ
+		//è·é›¢è¨ˆç®—
 
 
 	}
 
-	//ÀÛ‚É“®‚©‚·•”•ª‡A
+	//å®Ÿéš›ã«å‹•ã‹ã™éƒ¨åˆ†â‘¡
 	switch (direction_) {
 	case UP:
-		//‰¼‚Ìpos‚ği‚ß‚é
+		//ä»®ã®posã‚’é€²ã‚ã‚‹
 		next_.leftTop.x = static_cast<int>((enemy_.pos.x - enemy_.radius.x) / enemy_.size);
 		next_.leftTop.y = static_cast<int>((enemy_.pos.y - enemy_.radius.y - speed_) / enemy_.size);
 		next_.rightTop.x = static_cast<int>((enemy_.pos.x + enemy_.radius.x - 1.0f) / enemy_.size);
 		next_.rightTop.y = static_cast<int>((enemy_.pos.y - enemy_.radius.y - speed_) / enemy_.size);
-		//Block‚ª‚È‚¢‚Éi‚Ş
+		//BlockãŒãªã„æ™‚ã«é€²ã‚€
 		if (map[next_.leftTop.y][next_.leftTop.x] != 0 && map[next_.rightTop.y][next_.rightTop.x] != 0) {
 			enemy_.pos.y -= speed_;
 			moveCounter_++;
@@ -51,12 +51,12 @@ void Moo::Move(int map[mapRow][mapColumn]) {
 		//Novice::ScreenPrintf(0, 20, "UP");
 		break;
 	case DOWN:
-		//‰¼‚Ìpos‚ği‚ß‚é
+		//ä»®ã®posã‚’é€²ã‚ã‚‹
 		next_.leftBottom.x = static_cast<int>((enemy_.pos.x - enemy_.radius.x) / enemy_.size);
 		next_.leftBottom.y = static_cast<int>((enemy_.pos.y + enemy_.radius.y - 1.0f + speed_) / enemy_.size);
 		next_.rightBottom.x = static_cast<int>((enemy_.pos.x + enemy_.radius.x - 1.0f) / enemy_.size);
 		next_.rightBottom.y = static_cast<int>((enemy_.pos.y + enemy_.radius.y - 1.0f + speed_) / enemy_.size);
-		//Block‚ª‚È‚¢‚Éi‚Ş
+		//BlockãŒãªã„æ™‚ã«é€²ã‚€
 		if (map[next_.leftBottom.y][next_.leftBottom.x] != 0 && map[next_.rightBottom.y][next_.rightBottom.x] != 0) {
 			enemy_.pos.y += speed_;
 			moveCounter_++;
@@ -64,12 +64,12 @@ void Moo::Move(int map[mapRow][mapColumn]) {
 		//Novice::ScreenPrintf(0, 20, "DOWN");
 		break;
 	case LEFT:
-		//‰¼‚Ìpos‚ği‚ß‚é
+		//ä»®ã®posã‚’é€²ã‚ã‚‹
 		next_.leftTop.x = static_cast<int>((enemy_.pos.x - enemy_.radius.x - speed_) / enemy_.size);
 		next_.leftTop.y = static_cast<int>((enemy_.pos.y - enemy_.radius.y) / enemy_.size);
 		next_.leftBottom.x = static_cast<int>((enemy_.pos.x - enemy_.radius.x - speed_) / enemy_.size);
 		next_.leftBottom.y = static_cast<int>((enemy_.pos.y + enemy_.radius.y - 1.0f) / enemy_.size);
-		//Block‚ª‚È‚¢‚Éi‚Ş
+		//BlockãŒãªã„æ™‚ã«é€²ã‚€
 		if (map[next_.leftTop.y][next_.leftTop.x] != 0 && map[next_.leftBottom.y][next_.leftBottom.x] != 0) {
 			enemy_.pos.x -= speed_;
 			moveCounter_++;
@@ -77,12 +77,12 @@ void Moo::Move(int map[mapRow][mapColumn]) {
 		//Novice::ScreenPrintf(0, 20, "LEFT");
 		break;
 	case RIGHT:
-		//‰¼‚Ìpos‚ği‚ß‚é
+		//ä»®ã®posã‚’é€²ã‚ã‚‹
 		next_.rightTop.x = static_cast<int>((enemy_.pos.x + enemy_.radius.x - 1.0f + speed_) / enemy_.size);
 		next_.rightTop.y = static_cast<int>((enemy_.pos.y - enemy_.radius.y) / enemy_.size);
 		next_.rightBottom.x = static_cast<int>((enemy_.pos.x + enemy_.radius.x - 1.0f + speed_) / enemy_.size);
 		next_.rightBottom.y = static_cast<int>((enemy_.pos.y + enemy_.radius.y - 1.0f) / enemy_.size);
-		//Block‚ª‚È‚¢‚Éi‚Ş
+		//BlockãŒãªã„æ™‚ã«é€²ã‚€
 		if (map[next_.rightTop.y][next_.rightTop.x] != 0 && map[next_.rightBottom.y][next_.rightBottom.x] != 0) {
 			enemy_.pos.x += speed_;
 			moveCounter_++;
@@ -94,7 +94,7 @@ void Moo::Move(int map[mapRow][mapColumn]) {
 }
 
 void Moo::Update() {
-	//l“_‚ÌÀ•W‚ÌXV
+	//å››ç‚¹ã®åº§æ¨™ã®æ›´æ–°
 	enemy_.leftTop = { enemy_.pos.x - enemy_.radius.x,enemy_.pos.y - enemy_.radius.y };
 	enemy_.rightTop = { enemy_.pos.x + enemy_.radius.x - 1.0f,enemy_.pos.y - enemy_.radius.y };
 	enemy_.leftBottom = { enemy_.pos.x - enemy_.radius.x,enemy_.pos.y + enemy_.radius.y - 1.0f };
