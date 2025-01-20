@@ -8,6 +8,7 @@
 #include "Enemy.h"
 #include "Mie.h"
 #include "Moo.h"
+#include "Collision.h"
 
 const char kWindowTitle[] = "ゲームタイトル";
 
@@ -50,6 +51,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		
 		if (keys[DIK_SPACE]) { // 軌跡反映用(仮)
 			map->changeTheMap(map1);
+
+			player->Initialize(1, 1);
 		}
 		map->Update();
 
@@ -62,6 +65,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mie2->Move(map->map_);
 		mie2->Update();
 		
+		Collision(player, mie);
+		Collision(player, mie2);
+
 		moo->Move(map->map_, player);
 		moo->Update();
 

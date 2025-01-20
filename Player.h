@@ -17,6 +17,8 @@ public:
 
 	Vertices4<int> mapNext_;         // 次のマップ上の座標
 
+	int isAlive_;                    // 生きているかのフラグ
+
 private:
 
 	Map& m_;                         // プレイヤーが移動するマップの参照
@@ -50,6 +52,13 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~Player();
+
+	/// <summary>
+	/// プレイヤーの初期化
+	/// </summary>
+	/// <param name="startX">初期地点X(マップ上の座標)</param>
+	/// <param name="startY">初期地点Y(マップ上の座標)</param>
+	void Initialize(int startX, int startY);
 
 	/// <summary>
 	/// 自機の操作処理

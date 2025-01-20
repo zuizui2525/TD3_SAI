@@ -13,6 +13,10 @@ float const kSpeed = 6.0f;
 int const kMoveCounter = static_cast<int>(kSize / kSpeed);
 
 class Enemy {
+public:
+	Quad enemy_;
+	bool isAlive_;
+
 protected:
 	Images image_;
 	Direction direction_;
@@ -20,10 +24,10 @@ protected:
 	Vertices4<int> next_;
 	Vertices4<int> stop_;
 	Vertices4<int> advance_;
-	Quad enemy_;
+	
 	float speed_;
 	int randNumber_;
 	int moveCounter_;
-	bool isAlive_;
+	
 };
 

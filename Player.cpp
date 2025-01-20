@@ -1,5 +1,5 @@
-﻿#include "Player.h"
-#include <math.h>
+﻿#include <math.h>
+#include "Player.h"
 
 // public
 
@@ -31,6 +31,9 @@ Player::Player(Map& m, int startX, int startY) : m_(m) {
 	mapNext_.rightTop = { 0, 0 };
 	mapNext_.rightBottom = { 0, 0 };
 
+	// 生きているかのフラグ
+	isAlive_ = true;
+
 	// speed
 	speed_ = 6;
 
@@ -51,6 +54,27 @@ Player::Player(Map& m, int startX, int startY) : m_(m) {
 
 Player::~Player() {}
 
+void Player::Initialize(int startX, int startY) {
+	// 座標
+	playerQuad_.pos = { static_cast<float>(60 * startX + 30), static_cast<float>(60 * startY + 30) };
+	// マップ上の番号
+	mapCurrent_.leftTop = { startX, startY };
+	mapCurrent_.leftBottom = { startX, startY };
+	mapCurrent_.rightTop = { startX, startY };
+	mapCurrent_.rightBottom = { startX, startY };
+
+	mapPrev_ = mapCurrent_;
+
+	mapNext_.leftTop = { 0, 0 };
+	mapNext_.leftBottom = { 0, 0 };
+	mapNext_.rightTop = { 0, 0 };
+	mapNext_.rightBottom = { 0, 0 };
+	// 生きているかのフラグ
+	isAlive_ = true;
+	// 軌跡用
+	moveLength_ = { 0, 0 };
+}
+
 void Player::Update(char* keys) {
 	// 操作を初期化
 	isPressLeft_ = false;
@@ -60,6 +84,11 @@ void Player::Update(char* keys) {
 
 	//現在の4点
 	QuadCalculation();
+
+	//やられていたら更新しない
+	if (!isAlive_) {
+		return;
+	}
 
 	// プレイヤーを仮に進ませる
 	if (keys[DIK_W] && !keys[DIK_S]) {
@@ -174,7 +203,9 @@ void Player::Update(char* keys) {
 }
 
 void Player::Draw() {
-	DrawQuad(playerQuad_);
+	if (isAlive_) {
+		DrawQuad(playerQuad_);
+	}
 }
 
 // private
