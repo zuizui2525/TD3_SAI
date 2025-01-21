@@ -2,8 +2,15 @@
 #include "Collision.h"
 
 void Collision(Player* player, Enemy* enemy) {
-	if (sqrtf(powf(player->playerQuad_.pos.x - enemy->enemy_.pos.x, 2.0f)	+ powf(player->playerQuad_.pos.y - enemy->enemy_.pos.y, 2.0f))
-		<= player->playerQuad_.radius.x + enemy->enemy_.radius.x) {
+	if (sqrtf(powf(player->playerQuad_.pos.x - enemy->enemy_.pos.x, 2.0f) + powf(player->playerQuad_.pos.y - enemy->enemy_.pos.y, 2.0f))
+		< player->playerQuad_.radius.x + enemy->enemy_.radius.x) {
 		player->isAlive_ = false;
+	}
+}
+
+void CleanTlale(Enemy* enemy, Map* map) {
+	if (map->map_[static_cast<int>(enemy->enemy_.pos.y / blockSize)][static_cast<int>(enemy->enemy_.pos.x / blockSize)] 
+		== 2) {
+		map->SetTile(static_cast<int>(enemy->enemy_.pos.y / blockSize), static_cast<int>(enemy->enemy_.pos.x / blockSize), 1);
 	}
 }
