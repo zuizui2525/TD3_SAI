@@ -68,6 +68,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		Collision(player, mie);
 		Collision(player, mie2);
 
+		CleanTlale(mie, map);
+		CleanTlale(mie2, map);
+
 		moo->Move(map->map_, player);
 		moo->Update();
 
