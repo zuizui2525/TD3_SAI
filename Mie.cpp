@@ -52,10 +52,48 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 		advance_.rightBottom.x = static_cast<int>((enemy_.pos.x + enemy_.radius.x - 1.0f + speed_) / enemy_.size);
 		advance_.rightBottom.y = static_cast<int>((enemy_.pos.y + enemy_.radius.y - 1.0f + speed_) / enemy_.size);
 
-		if (map[advance_.leftTop.y][advance_.leftTop.x] == 0 
-			&& map[advance_.rightTop.y][stop_.rightTop.x] == 0 
-			&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0) {
-			//Novice::ScreenPrintf(0, 40, "UP,LEFT");
+		if (//上以外の３方向が壁
+			map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+			&& map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+			&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+			&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+			&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+			&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+			) {
+			direction_ = UP;
+		} else if (//下以外の３方向が壁
+			map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+			&& map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+			&& map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+			&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+			&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+			&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+			) {
+			direction_ = DOWN;
+		} else if (//左以外の３方向が壁
+			map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+			&& map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+			&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+			&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+			&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+			&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+			) {
+			direction_ = LEFT;
+		} else if (//右以外の３方向が壁
+			map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+			&& map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+			&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+			&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+			&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+			&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+			) {
+			direction_ = RIGHT;
+		} else if (//左と上の２方向が壁
+			map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+			&& map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+			&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+			&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+			) {
 			randNumber_ = rand() % 2;
 			switch (randNumber_) {
 			case 0:
@@ -65,10 +103,12 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 				direction_ = RIGHT;
 				break;
 			}
-		} else if (map[advance_.leftTop.y][stop_.leftTop.x] == 0 
-			&& map[advance_.rightTop.y][advance_.rightTop.x] == 0 
-			&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0) {
-			//Novice::ScreenPrintf(0, 40, "UP,RIGHT");
+		} else if (//右と上の２方向が壁
+			map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+			&& map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+			&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+			&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//左下
+			) {
 			randNumber_ = rand() % 2;
 			switch (randNumber_) {
 			case 0:
@@ -78,10 +118,12 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 				direction_ = LEFT;
 				break;
 			}
-		} else if (map[stop_.leftTop.y][advance_.leftTop.x] == 0 
-			&& map[advance_.leftBottom.y][advance_.leftBottom.x] == 0 
-			&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0) {
-			//Novice::ScreenPrintf(0, 40, "DOWN,LEFT");
+		} else if (//左と下の２方向が壁
+			map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+			&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+			&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+			&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+			) {
 			randNumber_ = rand() % 2;
 			switch (randNumber_) {
 			case 0:
@@ -91,10 +133,12 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 				direction_ = RIGHT;
 				break;
 			}
-		} else if (map[stop_.rightTop.y][advance_.rightTop.x] == 0 
-			&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0 
-			&& map[advance_.rightBottom.y][advance_.rightBottom.x] == 0) {
-			//Novice::ScreenPrintf(0, 40, "DOWN,RIGHT");
+		} else if (//右と下の２方向が壁
+			map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+			&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+			&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+			&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+			) {
 			randNumber_ = rand() % 2;
 			switch (randNumber_) {
 			case 0:
@@ -104,11 +148,12 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 				direction_ = LEFT;
 				break;
 			}
-		} else if (map[advance_.leftTop.y][stop_.leftTop.x] == 0 
-			&& map[advance_.rightTop.y][stop_.rightTop.x] == 0 
-			&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0 
-			&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0) {
-			//Novice::ScreenPrintf(0, 40, "UP,DOWN,LEFT,RIGHT[Y,advance]");
+		} else if (//上と下の２方向が壁
+			map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+			&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+			&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+			&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+			) {
 			randNumber_ = rand() % 2;
 			switch (randNumber_) {
 			case 0:
@@ -122,11 +167,12 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 				}
 				break;
 			}
-		} else if (map[stop_.leftTop.y][advance_.leftTop.x] == 0 
-			&& map[stop_.rightTop.y][advance_.rightTop.x] == 0 
-			&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0 
-			&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0) {
-			//Novice::ScreenPrintf(0, 40, "UP,DOWN,LEFT,RIGHT[X,advance]");
+		} else if (//右と左の２方向が壁
+			map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+			&& map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+			&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+			&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+			) {
 			randNumber_ = rand() % 2;
 			switch (randNumber_) {
 			case 0:
@@ -140,9 +186,10 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 				}
 				break;
 			}
-		} else if (map[advance_.leftTop.y][stop_.leftTop.x] == 0 
-			&& map[advance_.rightTop.y][stop_.rightTop.x] == 0) {
-			//Novice::ScreenPrintf(0, 40, "UP");
+		} else if (//上が壁
+			map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+			&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+			) {
 			randNumber_ = rand() % 3;
 			switch (randNumber_) {
 			case 0:
@@ -155,9 +202,10 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 				direction_ = RIGHT;
 				break;
 			}
-		} else if (map[advance_.leftBottom.y][stop_.leftBottom.x] == 0 
-			&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0) {
-			//Novice::ScreenPrintf(0, 40, "DOWN");
+		} else if (//下が壁
+			map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+			&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+			) {
 			randNumber_ = rand() % 3;
 			switch (randNumber_) {
 			case 0:
@@ -170,9 +218,10 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 				direction_ = RIGHT;
 				break;
 			}
-		} else if (map[stop_.leftTop.y][advance_.leftTop.x] == 0 
-			&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0) {
-			//Novice::ScreenPrintf(0, 40, "LEFT");
+		} else if (//左が壁
+			map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+			&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+			) {
 			randNumber_ = rand() % 3;
 			switch (randNumber_) {
 			case 0:
@@ -185,9 +234,10 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 				direction_ = RIGHT;
 				break;
 			}
-		} else if (map[stop_.rightTop.y][advance_.rightTop.x] == 0 
-			&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0) {
-			//Novice::ScreenPrintf(0, 40, "RIGHT");
+		} else if (//右が壁
+			map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+			&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+			) {
 			randNumber_ = rand() % 3;
 			switch (randNumber_) {
 			case 0:
@@ -200,8 +250,7 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 				direction_ = LEFT;
 				break;
 			}
-		} else {
-			//Novice::ScreenPrintf(0, 40, "NONE");
+		} else {//全方向に壁がない
 			randNumber_ = rand() % 4;
 			switch (randNumber_) {
 			case 0:
@@ -289,9 +338,9 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 void Mie::Update() {
 	//四点の座標の更新
 	enemy_.leftTop = { enemy_.pos.x - enemy_.radius.x,enemy_.pos.y - enemy_.radius.y };
-	enemy_.rightTop = { enemy_.pos.x + enemy_.radius.x - 1.0f,enemy_.pos.y - enemy_.radius.y };
-	enemy_.leftBottom = { enemy_.pos.x - enemy_.radius.x,enemy_.pos.y + enemy_.radius.y - 1.0f };
-	enemy_.rightBottom = { enemy_.pos.x + enemy_.radius.x - 1.0f,enemy_.pos.y + enemy_.radius.y - 1.0f };
+	enemy_.rightTop = { enemy_.pos.x + enemy_.radius.x,enemy_.pos.y - enemy_.radius.y };
+	enemy_.leftBottom = { enemy_.pos.x - enemy_.radius.x,enemy_.pos.y + enemy_.radius.y };
+	enemy_.rightBottom = { enemy_.pos.x + enemy_.radius.x,enemy_.pos.y + enemy_.radius.y };
 }
 
 void Mie::Draw() {

@@ -19,7 +19,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int const kWindowHeight = 1080;//windowの縦幅
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
 	//フルスクリーン表示 ※これで少し重くなるっぽい
-	//Novice::SetWindowMode(kFullscreen);
+	Novice::SetWindowMode(kFullscreen);
 
 	//確率(rand)
 	unsigned int currentTime = unsigned(time(nullptr));//乱数
@@ -29,6 +29,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Player* player = new Player(*map, 1, 1);
 	Mie* mie = new Mie(11,10);
 	Mie* mie2 = new Mie(13, 10);
+	Moo* moo = new Moo(15, 10);
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -61,6 +62,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mie2->Move(map->map_);
 		mie2->Update();
 		
+		moo->Move(map->map_, player);
+		moo->Update();
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -75,6 +79,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		mie->Draw();
 		mie2->Draw();
+
+		moo->Draw();
 
 		for (int y = 0; y < mapRow; y++) {
 			for (int x = 0; x < mapColumn; x++) {

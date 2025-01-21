@@ -3,6 +3,7 @@
 #include "struct.h"
 #include "Zuizui.h"
 #include "map.h"
+#include "Player.h"
 
 //固定のサイズ
 float const kSize = 60.0f;

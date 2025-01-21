@@ -182,11 +182,11 @@ void Player::QuadCalculation() {
 	playerQuad_.leftTop.x = playerQuad_.pos.x - playerQuad_.radius.x;
 	playerQuad_.leftTop.y = playerQuad_.pos.y - playerQuad_.radius.y;
 	playerQuad_.leftBottom.x = playerQuad_.pos.x - playerQuad_.radius.x;
-	playerQuad_.leftBottom.y = playerQuad_.pos.y + playerQuad_.radius.y - 1.0f;
-	playerQuad_.rightTop.x = playerQuad_.pos.x + playerQuad_.radius.x - 1.0f;
+	playerQuad_.leftBottom.y = playerQuad_.pos.y + playerQuad_.radius.y;
+	playerQuad_.rightTop.x = playerQuad_.pos.x + playerQuad_.radius.x;
 	playerQuad_.rightTop.y = playerQuad_.pos.y - playerQuad_.radius.y;
-	playerQuad_.rightBottom.x = playerQuad_.pos.x + playerQuad_.radius.x - 1.0f;
-	playerQuad_.rightBottom.y = playerQuad_.pos.y + playerQuad_.radius.y - 1.0f;
+	playerQuad_.rightBottom.x = playerQuad_.pos.x + playerQuad_.radius.x;
+	playerQuad_.rightBottom.y = playerQuad_.pos.y + playerQuad_.radius.y;
 }
 
 void Player::LeaveTrail() {
