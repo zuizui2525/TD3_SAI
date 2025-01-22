@@ -85,6 +85,9 @@
     <ClCompile Include="Collision.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>game\map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="Collision.h">
       <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>game\map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

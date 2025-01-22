@@ -124,6 +124,7 @@ struct Quad {
 
 struct Images {
 	int blocks = Novice::LoadTexture("./Resources./images./blocks.png");
+	int coin = Novice::LoadTexture("./Resources./images./Coin.png");
 	int player = Novice::LoadTexture("./Resources./images./Player.png");
 	int enemy_mie = Novice::LoadTexture("./Resources./images./EnemyMie.png");
 	int enemy_moo = Novice::LoadTexture("./Resources./images./EnemyMoo.png");
