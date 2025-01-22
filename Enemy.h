@@ -7,7 +7,7 @@
 //固定のサイズ
 float const kSize = 60.0f;
 //固定のスピード
-float const kSpeed = 6.0f;
+float const kSpeed = 4.0f;
 //カウンターの限界
 int const kMoveCounter = static_cast<int>(kSize / kSpeed);
 

@@ -4,6 +4,7 @@
 #include "Zuizui.h"
 #include "map.h"
 #include "mapCode.h"
+#include "Coin.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Mie.h"
@@ -27,6 +28,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	srand(currentTime);
 
 	Map* map = new Map();
+	Coin* coin = new Coin();
 	Player* player = new Player(*map, 1, 1);
 	Mie* mie = new Mie(11,10);
 	Mie* mie2 = new Mie(13, 10);
@@ -51,6 +53,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		if (keys[DIK_SPACE]) { // 軌跡反映用(仮)
 			map->changeTheMap(map1);
 
+			coin->Spawn(coins1);
+
+			coin->takeCount = 0;
+
+			for (int i = 0; i < kMaxCoinNum; i++) {
+				coin->isTaken_[i] = false;
+			}
+
 			player->Initialize(1, 1);
 		}
 		map->Update();
@@ -64,8 +74,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mie2->Move(map->map_);
 		mie2->Update();
 		
-		Collision(player, mie);
-		Collision(player, mie2);
+		// 衝突判定
+		if (Collision(&player->playerQuad_, &mie->enemy_, 0)
+			|| Collision(&player->playerQuad_, &mie2->enemy_, 0)) {
+			player->isAlive_ = false;
+		}
+
+		for (int i = 0; i < kMaxCoinNum; i++) {
+			if (!coin->isTaken_[i]) {
+				if (Collision(&player->playerQuad_, &coin->coins_[i], 0)) {
+					coin->isTaken_[i] = true;
+					coin->takeCount++;
+				}
+			}
+		}
 
 		CleanTlale(mie, map);
 		CleanTlale(mie2, map);
@@ -80,6 +102,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		
 		map->Draw();
 
+		coin->Draw();
+
 		player->Draw();
 
 		mie->Draw();
@@ -90,6 +114,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				Novice::ScreenPrintf(1300 + x * 20, y * 20, "%d", map->map_[y][x]);
 			}
 		}
+
+		Novice::ScreenPrintf(1300, 1000, "SPACE: reset");
+
+		Novice::ScreenPrintf(1300,800, "Coin: %d / %d", coin->takeCount, kMaxCoinNum);
+
+		if (coin->takeCount >= kMaxCoinNum) {
+			Novice::ScreenPrintf(1300, 700, "CLEAR");
+		}
+
 		///
 		/// ↑描画処理ここまで
 		///
@@ -105,6 +138,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	delete player;
 	delete map;
+	delete coin;
 	delete mie;
 	delete mie2;
 
