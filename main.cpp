@@ -74,10 +74,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mie->Update();
 		mie2->Move(map->map_);
 		mie2->Update();
+		moo->Move(map->map_, player);
+		moo->Update();
 		
 		// 衝突判定
 		if (Collision(&player->quad_, &mie->enemy_, 0)
-			|| Collision(&player->quad_, &mie2->enemy_, 0)) {
+			|| Collision(&player->quad_, &mie2->enemy_, 0)
+			|| Collision(&player->quad_, &moo->enemy_, 0)) {
 			player->isAlive_ = false;
 		}
 
@@ -92,9 +95,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		CleanTlale(mie, map);
 		CleanTlale(mie2, map);
-
-		moo->Move(map->map_, player);
-		moo->Update();
+		CleanTlale(moo, map);
 
 		///
 		/// ↑更新処理ここまで
