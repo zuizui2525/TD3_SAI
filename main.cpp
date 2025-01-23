@@ -11,7 +11,7 @@
 #include "Moo.h"
 #include "Collision.h"
 
-const char kWindowTitle[] = "ゲームタイトル";
+const char kWindowTitle[] = "1321_塞-SAI-";
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
