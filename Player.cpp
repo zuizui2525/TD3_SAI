@@ -40,6 +40,9 @@ Player::Player(Map& m, int startX, int startY) : m_(m) {
 	// 軌跡用
 	moveLength_ = { 0, 0 };
 
+	// 軌跡用
+	moveLength_ = { 0, 0 };
+
 	// フラグ
 	canMoveLeft_ = false;
 	canMoveRight_ = false;
@@ -209,7 +212,6 @@ void Player::Draw() {
 }
 
 // private
-
 void Player::QuadCalculation() {
 	playerQuad_.leftTop.x = playerQuad_.pos.x - playerQuad_.radius.x;
 	playerQuad_.leftTop.y = playerQuad_.pos.y - playerQuad_.radius.y;

@@ -1,4 +1,4 @@
-﻿#include <math.h>
+#include <math.h>
 #include "Collision.h"
 
 int Collision(Quad* objA, Quad* objB, int modeSelect) {

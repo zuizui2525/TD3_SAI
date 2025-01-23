@@ -32,6 +32,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Player* player = new Player(*map, 1, 1);
 	Mie* mie = new Mie(11,10);
 	Mie* mie2 = new Mie(13, 10);
+	//Moo* moo = new Moo(15, 10);
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -92,6 +93,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		CleanTlale(mie, map);
 		CleanTlale(mie2, map);
 
+		//moo->Move(map->map_, player);
+		//moo->Update();
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -122,6 +126,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		if (coin->takeCount >= kMaxCoinNum) {
 			Novice::ScreenPrintf(1300, 700, "CLEAR");
 		}
+
+		for (int y = 0; y < mapRow; y++) {
+			for (int x = 0; x < mapColumn; x++) {
+				Novice::ScreenPrintf(1300 + x * 20, y * 20, "%d", map->map_[y][x]);
+			}
+		}
+
+		//moo->Draw();
 
 		///
 		/// ↑描画処理ここまで

@@ -1,19 +1,20 @@
-ï»¿#pragma once
+#pragma once
+#include "Player.h"
 #include "Enemy.h"
 #include "map.h"
 
 /// <summary>
-/// çŸ©å½¢Aã¨çŸ©å½¢Bã®è¡çªåˆ¤å®š
+/// ‹éŒ`A‚Æ‹éŒ`B‚ÌÕ“Ë”»’è
 /// </summary>
-/// <param name="objA">1ã¤ç›®ã®çŸ©å½¢</param>
-/// <param name="objB">2ã¤ç›®ã®çŸ©å½¢</param>
-/// <param name="modeSelect">è¡çªæ™‚ã«[0:true,1:false]ã®ã©ã£ã¡ã‚’ã‚’è¿”ã™ã‹</param>
+/// <param name="objA">1‚Â–Ú‚Ì‹éŒ`</param>
+/// <param name="objB">2‚Â–Ú‚Ì‹éŒ`</param>
+/// <param name="modeSelect">Õ“Ë‚É[0:true,1:false]‚Ì‚Ç‚Á‚¿‚ğ‚ğ•Ô‚·‚©</param>
 /// <returns></returns>
 int Collision(Quad* objA, Quad* objB, int modeSelect);
 
 /// <summary>
-/// æ•µãŒè»Œè·¡ã‚’é“ã«æˆ»ã™ç”¨ã®é–¢æ•°
+/// “G‚ª‹OÕ‚ğ“¹‚É–ß‚·—p‚ÌŠÖ”
 /// </summary>
-/// <param name="enemy">æ•µ</param>
-/// <param name="map">ãƒãƒƒãƒ—æƒ…å ±</param>
+/// <param name="enemy">“G</param>
+/// <param name="map">ƒ}ƒbƒvî•ñ</param>
 void CleanTlale(Enemy* enemy, Map* map);
