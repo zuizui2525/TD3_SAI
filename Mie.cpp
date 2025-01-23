@@ -271,9 +271,9 @@ void Mie::Move(int map[mapRow][mapColumn]) {
 void Mie::Update() {
 	//四点の座標の更新
 	enemy_.leftTop = { enemy_.pos.x - enemy_.radius.x,enemy_.pos.y - enemy_.radius.y };
-	enemy_.rightTop = { enemy_.pos.x + enemy_.radius.x - 1.0f,enemy_.pos.y - enemy_.radius.y };
-	enemy_.leftBottom = { enemy_.pos.x - enemy_.radius.x,enemy_.pos.y + enemy_.radius.y - 1.0f };
-	enemy_.rightBottom = { enemy_.pos.x + enemy_.radius.x - 1.0f,enemy_.pos.y + enemy_.radius.y - 1.0f };
+	enemy_.rightTop = { enemy_.pos.x + enemy_.radius.x,enemy_.pos.y - enemy_.radius.y };
+	enemy_.leftBottom = { enemy_.pos.x - enemy_.radius.x,enemy_.pos.y + enemy_.radius.y };
+	enemy_.rightBottom = { enemy_.pos.x + enemy_.radius.x,enemy_.pos.y + enemy_.radius.y };
 }
 
 void Mie::Draw() {
