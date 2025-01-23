@@ -5,18 +5,18 @@
 
 Player::Player(Map& m, int startX, int startY) : m_(m) {
 	// Quad
-	playerQuad_.size = 1;
-	playerQuad_.pos = { static_cast<float>(60 * startX + 30), static_cast<float>(60 * startY + 30) };
-	playerQuad_.radius = { 30, 30 };
-	playerQuad_.leftTop = { 0, 0 };
-	playerQuad_.leftBottom = { 0, 0 };
-	playerQuad_.rightTop = { 0, 0 };
-	playerQuad_.rightBottom = { 0, 0 };
-	playerQuad_.imagePos = { 0, 0 };
-	playerQuad_.imageWidth = 60;
-	playerQuad_.imageHeight = 60;
-	playerQuad_.image = image_.player;
-	playerQuad_.color = WHITE;
+	quad_.size = 1;
+	quad_.pos = { static_cast<float>(60 * startX + 30), static_cast<float>(60 * startY + 30) };
+	quad_.radius = { 30, 30 };
+	quad_.leftTop = { 0, 0 };
+	quad_.leftBottom = { 0, 0 };
+	quad_.rightTop = { 0, 0 };
+	quad_.rightBottom = { 0, 0 };
+	quad_.imagePos = { 0, 0 };
+	quad_.imageWidth = 60;
+	quad_.imageHeight = 60;
+	quad_.image = image_.player;
+	quad_.color = WHITE;
 
 	// マップ上の番号
 	mapCurrent_.leftTop = { startX, startY };
@@ -59,7 +59,7 @@ Player::~Player() {}
 
 void Player::Initialize(int startX, int startY) {
 	// 座標
-	playerQuad_.pos = { static_cast<float>(60 * startX + 30), static_cast<float>(60 * startY + 30) };
+	quad_.pos = { static_cast<float>(60 * startX + 30), static_cast<float>(60 * startY + 30) };
 	// マップ上の番号
 	mapCurrent_.leftTop = { startX, startY };
 	mapCurrent_.leftBottom = { startX, startY };
@@ -96,15 +96,15 @@ void Player::Update(char* keys) {
 	// プレイヤーを仮に進ませる
 	if (keys[DIK_W] && !keys[DIK_S]) {
 		//マップチップ上の座標
-		mapNext_.leftTop.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x) / blockSize);
-		mapNext_.leftTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y - speed_) / blockSize);
-		mapNext_.rightTop.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f) / blockSize);
-		mapNext_.rightTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y - speed_) / blockSize);
+		mapNext_.leftTop.x = static_cast<int>((quad_.pos.x - quad_.radius.x) / blockSize);
+		mapNext_.leftTop.y = static_cast<int>((quad_.pos.y - quad_.radius.y - speed_) / blockSize);
+		mapNext_.rightTop.x = static_cast<int>((quad_.pos.x + quad_.radius.x - 1.0f) / blockSize);
+		mapNext_.rightTop.y = static_cast<int>((quad_.pos.y - quad_.radius.y - speed_) / blockSize);
 
 		//ブロックが無ければ進む
 		if (m_.map_[mapNext_.leftTop.y][mapNext_.leftTop.x] == 1
 			&& m_.map_[mapNext_.rightTop.y][mapNext_.rightTop.x] == 1) {
-			playerQuad_.pos.y -= speed_;
+			quad_.pos.y -= speed_;
 
 			// 移動量の更新
 			moveLength_.y -= speed_;
@@ -119,15 +119,15 @@ void Player::Update(char* keys) {
 
 	if (keys[DIK_S] && !keys[DIK_W]) {
 		//マップチップ上の座標
-		mapNext_.leftBottom.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x) / blockSize);
-		mapNext_.leftBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f + speed_) / blockSize);
-		mapNext_.rightBottom.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f) / blockSize);
-		mapNext_.rightBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f + speed_) / blockSize);
+		mapNext_.leftBottom.x = static_cast<int>((quad_.pos.x - quad_.radius.x) / blockSize);
+		mapNext_.leftBottom.y = static_cast<int>((quad_.pos.y + quad_.radius.y - 1.0f + speed_) / blockSize);
+		mapNext_.rightBottom.x = static_cast<int>((quad_.pos.x + quad_.radius.x - 1.0f) / blockSize);
+		mapNext_.rightBottom.y = static_cast<int>((quad_.pos.y + quad_.radius.y - 1.0f + speed_) / blockSize);
 		
 		//ブロックが無ければ進む
 		if (m_.map_[mapNext_.leftBottom.y][mapNext_.leftBottom.x] == 1
 			&& m_.map_[mapNext_.rightBottom.y][mapNext_.rightBottom.x] == 1) {
-			playerQuad_.pos.y += speed_;
+			quad_.pos.y += speed_;
 
 			// 移動量の更新
 			moveLength_.y += speed_;
@@ -142,15 +142,15 @@ void Player::Update(char* keys) {
 
 	if (keys[DIK_A] && !keys[DIK_D]) {
 		//マップチップ上の座標
-		mapNext_.leftTop.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x - speed_) / blockSize);
-		mapNext_.leftTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y) / blockSize);
-		mapNext_.leftBottom.x = static_cast<int>((playerQuad_.pos.x - playerQuad_.radius.x - speed_) / blockSize);
-		mapNext_.leftBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f) / blockSize);
+		mapNext_.leftTop.x = static_cast<int>((quad_.pos.x - quad_.radius.x - speed_) / blockSize);
+		mapNext_.leftTop.y = static_cast<int>((quad_.pos.y - quad_.radius.y) / blockSize);
+		mapNext_.leftBottom.x = static_cast<int>((quad_.pos.x - quad_.radius.x - speed_) / blockSize);
+		mapNext_.leftBottom.y = static_cast<int>((quad_.pos.y + quad_.radius.y - 1.0f) / blockSize);
 
 		//ブロックが無ければ進む
 		if (m_.map_[mapNext_.leftTop.y][mapNext_.leftTop.x] == 1
 			&& m_.map_[mapNext_.leftBottom.y][mapNext_.leftBottom.x] == 1) {
-			playerQuad_.pos.x -= speed_;
+			quad_.pos.x -= speed_;
 
 			// 移動量の更新
 			moveLength_.x -= speed_;
@@ -165,15 +165,15 @@ void Player::Update(char* keys) {
 	
 	if (keys[DIK_D] && !keys[DIK_A]) {
 		//マップチップ上の座標
-		mapNext_.rightTop.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f + speed_) / blockSize);
-		mapNext_.rightTop.y = static_cast<int>((playerQuad_.pos.y - playerQuad_.radius.y) / blockSize);
-		mapNext_.rightBottom.x = static_cast<int>((playerQuad_.pos.x + playerQuad_.radius.x - 1.0f + speed_) / blockSize);
-		mapNext_.rightBottom.y = static_cast<int>((playerQuad_.pos.y + playerQuad_.radius.y - 1.0f) / blockSize);
+		mapNext_.rightTop.x = static_cast<int>((quad_.pos.x + quad_.radius.x - 1.0f + speed_) / blockSize);
+		mapNext_.rightTop.y = static_cast<int>((quad_.pos.y - quad_.radius.y) / blockSize);
+		mapNext_.rightBottom.x = static_cast<int>((quad_.pos.x + quad_.radius.x - 1.0f + speed_) / blockSize);
+		mapNext_.rightBottom.y = static_cast<int>((quad_.pos.y + quad_.radius.y - 1.0f) / blockSize);
 		
 		//ブロックが無ければ進む
 		if (m_.map_[mapNext_.rightTop.y][mapNext_.rightTop.x] == 1
 			&& m_.map_[mapNext_.rightBottom.y][mapNext_.rightBottom.x] == 1) {
-			playerQuad_.pos.x += speed_;
+			quad_.pos.x += speed_;
 			
 			// 移動量の更新
 			moveLength_.x += speed_;
@@ -187,15 +187,15 @@ void Player::Update(char* keys) {
 	}
 
 	// 範囲外の制限
-	if (playerQuad_.pos.x <= playerQuad_.radius.x) {
-		playerQuad_.pos.x = playerQuad_.radius.x;
-	} else if (playerQuad_.pos.x >= mapColumn * blockSize - playerQuad_.radius.x) {
-		playerQuad_.pos.x = mapColumn * blockSize - playerQuad_.radius.x;
+	if (quad_.pos.x <= quad_.radius.x) {
+		quad_.pos.x = quad_.radius.x;
+	} else if (quad_.pos.x >= mapColumn * blockSize - quad_.radius.x) {
+		quad_.pos.x = mapColumn * blockSize - quad_.radius.x;
 	}
-	if (playerQuad_.pos.y <= playerQuad_.radius.y) {
-		playerQuad_.pos.y = playerQuad_.radius.y;
-	} else if (playerQuad_.pos.y >= mapRow * blockSize - playerQuad_.radius.y) {
-		playerQuad_.pos.y = mapRow * blockSize - playerQuad_.radius.y;
+	if (quad_.pos.y <= quad_.radius.y) {
+		quad_.pos.y = quad_.radius.y;
+	} else if (quad_.pos.y >= mapRow * blockSize - quad_.radius.y) {
+		quad_.pos.y = mapRow * blockSize - quad_.radius.y;
 	}
 
 	//現在の4点
@@ -207,20 +207,20 @@ void Player::Update(char* keys) {
 
 void Player::Draw() {
 	if (isAlive_) {
-		DrawQuad(playerQuad_);
+		DrawQuad(quad_);
 	}
 }
 
 // private
 void Player::QuadCalculation() {
-	playerQuad_.leftTop.x = playerQuad_.pos.x - playerQuad_.radius.x;
-	playerQuad_.leftTop.y = playerQuad_.pos.y - playerQuad_.radius.y;
-	playerQuad_.leftBottom.x = playerQuad_.pos.x - playerQuad_.radius.x;
-	playerQuad_.leftBottom.y = playerQuad_.pos.y + playerQuad_.radius.y;
-	playerQuad_.rightTop.x = playerQuad_.pos.x + playerQuad_.radius.x;
-	playerQuad_.rightTop.y = playerQuad_.pos.y - playerQuad_.radius.y;
-	playerQuad_.rightBottom.x = playerQuad_.pos.x + playerQuad_.radius.x;
-	playerQuad_.rightBottom.y = playerQuad_.pos.y + playerQuad_.radius.y;
+	quad_.leftTop.x = quad_.pos.x - quad_.radius.x;
+	quad_.leftTop.y = quad_.pos.y - quad_.radius.y;
+	quad_.leftBottom.x = quad_.pos.x - quad_.radius.x;
+	quad_.leftBottom.y = quad_.pos.y + quad_.radius.y;
+	quad_.rightTop.x = quad_.pos.x + quad_.radius.x;
+	quad_.rightTop.y = quad_.pos.y - quad_.radius.y;
+	quad_.rightBottom.x = quad_.pos.x + quad_.radius.x;
+	quad_.rightBottom.y = quad_.pos.y + quad_.radius.y;
 }
 
 void Player::LeaveTrail() {

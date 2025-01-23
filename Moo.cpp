@@ -26,9 +26,7 @@ Moo::Moo(float x, float y) {
 	postionA_ = {};
 	postionB_ = {};
 	distance_ = {};
-	reactionRange_ = 20;
-
-	printPos_ = 0;
+	reactionRange_ = 5;
 }
 
 Moo::~Moo() {
@@ -40,8 +38,8 @@ void Moo::Move(int map[mapRow][mapColumn], Player* player) {
 		moveCounter_ = 0;
 		prevDirection_ = direction_;
 		//距離計算
-		postionA_ = player->playerQuad_.pos.x - enemy_.pos.x;
-		postionB_ = player->playerQuad_.pos.y - enemy_.pos.y;
+		postionA_ = fabsf(player->quad_.pos.x - enemy_.pos.x);
+		postionB_ = fabsf(player->quad_.pos.y - enemy_.pos.y);
 		distance_ = sqrtf(postionA_ * postionA_ + postionB_ * postionB_);
 		
 		//仮のposを進める
@@ -65,7 +63,7 @@ void Moo::Move(int map[mapRow][mapColumn], Player* player) {
 		advance_.rightBottom.y = static_cast<int>((enemy_.pos.y + enemy_.radius.y - 1.0f + speed_) / enemy_.size);
 
 		//行動
-		if (distance_ >= player->playerQuad_.radius.x * reactionRange_ + enemy_.radius.x * reactionRange_) {//ランダム
+		if (distance_ >= player->quad_.radius.x * reactionRange_ + enemy_.radius.x * reactionRange_) {//ランダム
 			if (//上以外の３方向が壁
 				map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
 				&& map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
@@ -290,9 +288,172 @@ void Moo::Move(int map[mapRow][mapColumn], Player* player) {
 				}
 			}
 		} else {//プレイヤーを追いかけてくる
-			
+			if (//上以外の３方向が壁
+				map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+				&& map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+				&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+				&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+				&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+				&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+				) {
+				direction_ = UP;
+			} else if (//下以外の３方向が壁
+				map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+				&& map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+				&& map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+				&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+				&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+				&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+				) {
+				direction_ = DOWN;
+			} else if (//左以外の３方向が壁
+				map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+				&& map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+				&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+				&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+				&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+				&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+				) {
+				direction_ = LEFT;
+			} else if (//右以外の３方向が壁
+				map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+				&& map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+				&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+				&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+				&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+				&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+				) {
+				direction_ = RIGHT;
+			} else if (//左と上の２方向が壁
+				map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+				&& map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+				&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+				&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+				) {
+				if (player->quad_.pos.x >= enemy_.pos.x) {
+					direction_ = RIGHT;
+				} else {
+					direction_ = DOWN;
+				}
+			} else if (//右と上の２方向が壁
+				map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+				&& map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+				&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+				&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//左下
+				) {
+				if (player->quad_.pos.x <= enemy_.pos.x) {
+					direction_ = LEFT;
+				} else {
+					direction_ = DOWN;
+				}
+			} else if (//左と下の２方向が壁
+				map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+				&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+				&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+				&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+				) {
+				if (player->quad_.pos.x >= enemy_.pos.x) {
+					direction_ = RIGHT;
+				} else {
+					direction_ = UP;
+				}
+			} else if (//右と下の２方向が壁
+				map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+				&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+				&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+				&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+				) {
+				if (player->quad_.pos.x <= enemy_.pos.x) {
+					direction_ = LEFT;
+				} else {
+					direction_ = UP;
+				}
+			} else if (//上と下の２方向が壁
+				map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+				&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+				&& map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+				&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+				) {
+				if (player->quad_.pos.x >= enemy_.pos.x && prevDirection_ != LEFT) {
+					direction_ = RIGHT;
+				} else if(player->quad_.pos.x < enemy_.pos.x && prevDirection_ != RIGHT) {
+					direction_ = LEFT;
+				}
+			} else if (//右と左の２方向が壁
+				map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+				&& map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+				&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+				&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+				) {
+				if (player->quad_.pos.y <= enemy_.pos.y && prevDirection_ != DOWN) {
+					direction_ = UP;
+				} else if(player->quad_.pos.y > enemy_.pos.y && prevDirection_ != UP){
+					direction_ = DOWN;
+				}
+			} else if (//上が壁
+				map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
+				&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
+				) {
+				if (player->quad_.pos.x >= enemy_.pos.x  && prevDirection_ != LEFT) {
+					direction_ = RIGHT;
+				} else if (player->quad_.pos.x <= enemy_.pos.x  && prevDirection_ != RIGHT) {
+					direction_ = LEFT;
+				} else if (prevDirection_ != UP) {
+					direction_ = DOWN;
+				}
+			} else if (//下が壁
+				map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
+				&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
+				) {
+				if (player->quad_.pos.x >= enemy_.pos.x  && prevDirection_ != LEFT) {
+					direction_ = RIGHT;
+				} else if (player->quad_.pos.x < enemy_.pos.x  && prevDirection_ != RIGHT) {
+					direction_ = LEFT;
+				} else if (prevDirection_ != DOWN) {
+					direction_ = UP;
+				}
+			} else if (//左が壁
+				map[stop_.leftTop.y][advance_.leftTop.x] == 0//左上
+				&& map[stop_.leftBottom.y][advance_.leftBottom.x] == 0//左下
+				) {
+				if (player->quad_.pos.y <= enemy_.pos.y && prevDirection_ != DOWN) {
+					direction_ = UP;
+				} else if (player->quad_.pos.y > enemy_.pos.y && prevDirection_ != UP) {
+					direction_ = DOWN;
+				} else if (prevDirection_ != LEFT) {
+					direction_ = RIGHT;
+				}
+			} else if (//右が壁
+				map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
+				&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
+				) {
+				if (player->quad_.pos.y <= enemy_.pos.y  && prevDirection_ != DOWN) {
+					direction_ = UP;
+				} else if (player->quad_.pos.y > enemy_.pos.y && prevDirection_ != UP) {
+					direction_ = DOWN;
+				} else if (prevDirection_ != RIGHT) {
+					direction_ = LEFT;
+				}
+			} else {//全方向に壁がない
+				if (postionA_ >= postionB_) {
+					if (player->quad_.pos.x >= enemy_.pos.x && prevDirection_ != LEFT) {
+						direction_ = RIGHT;
+					} else if (player->quad_.pos.x < enemy_.pos.x && prevDirection_ != RIGHT) {
+						direction_ = LEFT;
+					}
+				} else {
+					if (player->quad_.pos.y <= enemy_.pos.y && prevDirection_ != DOWN) {
+						direction_ = UP;
+					} else if (player->quad_.pos.y > enemy_.pos.y && prevDirection_ != UP) {
+						direction_ = DOWN;
+					}
+				}
+			}
 		}
 	}
+
+	Novice::ScreenPrintf(0, 0, "X : %.1f", postionA_);
+	Novice::ScreenPrintf(0, 20, "Y : %.1f", postionB_);
 
 	//実際に動かす部分②
 	switch (direction_) {

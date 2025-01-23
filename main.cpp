@@ -76,14 +76,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mie2->Update();
 		
 		// 衝突判定
-		if (Collision(&player->playerQuad_, &mie->enemy_, 0)
-			|| Collision(&player->playerQuad_, &mie2->enemy_, 0)) {
+		if (Collision(&player->quad_, &mie->enemy_, 0)
+			|| Collision(&player->quad_, &mie2->enemy_, 0)) {
 			player->isAlive_ = false;
 		}
 
 		for (int i = 0; i < kMaxCoinNum; i++) {
 			if (!coin->isTaken_[i]) {
-				if (Collision(&player->playerQuad_, &coin->coins_[i], 0)) {
+				if (Collision(&player->quad_, &coin->coins_[i], 0)) {
 					coin->isTaken_[i] = true;
 					coin->takeCount++;
 				}

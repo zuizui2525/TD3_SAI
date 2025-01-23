@@ -12,7 +12,5 @@ public:
 	void Move(int map[mapRow][mapColumn], Player* player);
 	void Update();
 	void Draw();
-
-	int printPos_;
 };
 
