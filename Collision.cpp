@@ -1,10 +1,20 @@
 #include <math.h>
 #include "Collision.h"
 
-void Collision(Player* player, Enemy* enemy) {
-	if (sqrtf(powf(player->playerQuad_.pos.x - enemy->enemy_.pos.x, 2.0f) + powf(player->playerQuad_.pos.y - enemy->enemy_.pos.y, 2.0f))
-		< player->playerQuad_.radius.x + enemy->enemy_.radius.x) {
-		player->isAlive_ = false;
+int Collision(Quad* objA, Quad* objB, int modeSelect) {
+	if (sqrtf(powf(objA->pos.x - objB->pos.x, 2.0f) + powf(objA->pos.y - objB->pos.y, 2.0f))
+		< objA->radius.x + objB->radius.x) {
+		if (modeSelect == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		if (modeSelect == 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
 
