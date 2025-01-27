@@ -66,12 +66,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			coin->Spawn(coins1);
 
-			coin->takeCount = 0;
-
-			for (int i = 0; i < kMaxCoinNum; i++) {
-				coin->isTaken_[i] = false;
-			}
-
 			player->Initialize(1, 1);
 		}
 		map->Update();
