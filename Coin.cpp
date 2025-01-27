@@ -25,6 +25,11 @@ Coin::~Coin() {}
 
 void Coin::Spawn(Vector2<int> spawnPoint_[kMaxCoinNum]) {
 	for (int i = 0; i < kMaxCoinNum; i++) {
+
+		takeCount = 0;
+
+		isTaken_[i] = false;
+
 		// 配置座標を求める
 		coins_[i].pos = 
 		{ static_cast<float>(spawnPoint_[i].y * blockSize + coins_[i].radius.x),
