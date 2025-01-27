@@ -10,6 +10,7 @@
 #include "Mie.h"
 #include "Moo.h"
 #include "Collision.h"
+#include "SceneManager.h"
 
 const char kWindowTitle[] = "1321_塞-SAI-";
 
@@ -26,6 +27,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//確率(rand)
 	unsigned int currentTime = unsigned(time(nullptr));//乱数
 	srand(currentTime);
+
+	SceneManager* sceneManager = new SceneManager();
 
 	Map* map = new Map();
 	Coin* coin = new Coin();
@@ -50,8 +53,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓更新処理ここから
 		///
-		
-		if (keys[DIK_SPACE]) { // 軌跡反映用(仮)
+		sceneManager->HandleInput(keys, preKeys);
+		if (keys[DIK_R] && !preKeys[DIK_R]) { // 軌跡反映用(仮)
 			map->changeTheMap(map1);
 
 			coin->Spawn(coins1);
@@ -132,6 +135,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				Novice::ScreenPrintf(1300 + x * 20, y * 20, "%d", map->map_[y][x]);
 			}
 		}
+		sceneManager->PrintCurrentScene();
 
 		//moo->Draw();
 
