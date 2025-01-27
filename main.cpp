@@ -31,11 +31,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Map* map = new Map();
 	Coin* coin = new Coin();
 	Player* player = new Player(*map, 1, 1);
-	Mie* mie = new Mie();
+	Mie* mie = new Mie();//赤
 	mie->Set(9, 10, UP);
-	Moo* moo = new Moo();
+	Moo* moo = new Moo();//青
 	moo->Set(11, 10, UP);
-	Mar* mar = new Mar();
+	Mar* mar = new Mar();//紫
 	mar->Set(13, 10, UP);
 
 	// キー入力結果を受け取る箱
