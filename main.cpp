@@ -12,6 +12,7 @@
 #include "Mar.h"
 #include "Collision.h"
 
+
 const char kWindowTitle[] = "1321_塞-SAI-";
 
 // Windowsアプリでのエントリーポイント(main関数)
@@ -27,6 +28,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//確率(rand)
 	unsigned int currentTime = unsigned(time(nullptr));//乱数
 	srand(currentTime);
+
 
 	Map* map = new Map();
 	Coin* coin = new Coin();
@@ -55,7 +57,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 		
-		if (keys[DIK_SPACE]) { // 軌跡反映用(仮)
+		if (keys[DIK_R] && !preKeys[DIK_R]) { // 軌跡反映用(仮)
 			mie->Set(9, 10, UP);
 			moo->Set(11, 10, UP);
 			mar->Set(13, 10, UP);
@@ -129,7 +131,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 		}
 
-		Novice::ScreenPrintf(1300, 1000, "SPACE: reset");
+		Novice::ScreenPrintf(1300, 1000, "R: reset");
 
 		Novice::ScreenPrintf(1300,800, "Coin: %d / %d", coin->takeCount, kMaxCoinNum);
 
@@ -142,6 +144,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				Novice::ScreenPrintf(1300 + x * 20, y * 20, "%d", map->map_[y][x]);
 			}
 		}
+		
 
 		///
 		/// ↑描画処理ここまで

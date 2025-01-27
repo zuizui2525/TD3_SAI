@@ -115,8 +115,11 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\TextureManager.cpp" />
     <ClCompile Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.cpp" />
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
+    <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="Mar.cpp" />
@@ -124,7 +127,10 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="Moo.cpp" />
     <ClCompile Include="particles.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="shake.cpp" />
+    <ClCompile Include="StageSelect.cpp" />
+    <ClCompile Include="Title.cpp" />
     <ClCompile Include="Zuizui.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,9 +161,12 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\DirectXGame\input\Input.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\scene\GameScene.h" />
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
+    <ClInclude Include="GameClear.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="mapCode.h" />
     <ClInclude Include="Mar.h" />
@@ -165,8 +174,11 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="Moo.h" />
     <ClInclude Include="particles.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="shake.h" />
+    <ClInclude Include="StageSelect.h" />
     <ClInclude Include="struct.h" />
+    <ClInclude Include="Title.h" />
     <ClInclude Include="Zuizui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
