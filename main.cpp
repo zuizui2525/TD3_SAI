@@ -9,6 +9,7 @@
 #include "Enemy.h"
 #include "Mie.h"
 #include "Moo.h"
+#include "Mar.h"
 #include "Collision.h"
 
 
@@ -22,7 +23,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int const kWindowHeight = 1080;//windowの縦幅
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
 	//フルスクリーン表示 ※これで少し重くなるっぽい
-	//Novice::SetWindowMode(kFullscreen);
+	Novice::SetWindowMode(kFullscreen);
 
 	//確率(rand)
 	unsigned int currentTime = unsigned(time(nullptr));//乱数
@@ -32,9 +33,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Map* map = new Map();
 	Coin* coin = new Coin();
 	Player* player = new Player(*map, 1, 1);
-	Mie* mie = new Mie(11,10);
-	Mie* mie2 = new Mie(13, 10);
-	//Moo* moo = new Moo(15, 10);
+	Mie* mie = new Mie();
+	mie->Set(9, 10, UP);
+	Moo* moo = new Moo();
+	moo->Set(11, 10, UP);
+	Mar* mar = new Mar();
+	mar->Set(13, 10, UP);
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -54,6 +58,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		
 		if (keys[DIK_R] && !preKeys[DIK_R]) { // 軌跡反映用(仮)
+			mie->Set(9, 10, UP);
+			moo->Set(11, 10, UP);
+			mar->Set(13, 10, UP);
+			
 			map->changeTheMap(map1);
 
 			coin->Spawn(coins1);
@@ -74,18 +82,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//敵の処理
 		mie->Move(map->map_);
 		mie->Update();
-		mie2->Move(map->map_);
-		mie2->Update();
+		moo->Move(map->map_, player);
+		moo->Update();
+		mar->Move(map->map_, player);
+		mar->Update();
 		
 		// 衝突判定
-		if (Collision(&player->playerQuad_, &mie->enemy_, 0)
-			|| Collision(&player->playerQuad_, &mie2->enemy_, 0)) {
+		if (Collision(&player->quad_, &mie->enemy_, 0)
+			|| Collision(&player->quad_, &moo->enemy_, 0)
+			|| Collision(&player->quad_, &mar->enemy_, 0)) {
 			player->isAlive_ = false;
 		}
 
 		for (int i = 0; i < kMaxCoinNum; i++) {
 			if (!coin->isTaken_[i]) {
-				if (Collision(&player->playerQuad_, &coin->coins_[i], 0)) {
+				if (Collision(&player->quad_, &coin->coins_[i], 0)) {
 					coin->isTaken_[i] = true;
 					coin->takeCount++;
 				}
@@ -93,10 +104,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 
 		CleanTlale(mie, map);
-		CleanTlale(mie2, map);
-
-		//moo->Move(map->map_, player);
-		//moo->Update();
+		CleanTlale(moo, map);
+		CleanTlale(mar, map);
 
 		///
 		/// ↑更新処理ここまで
@@ -113,7 +122,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		player->Draw();
 
 		mie->Draw();
-		mie2->Draw();
+		moo->Draw();
+		mar->Draw();
 
 		for (int y = 0; y < mapRow; y++) {
 			for (int x = 0; x < mapColumn; x++) {
@@ -136,8 +146,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 		
 
-		//moo->Draw();
-
 		///
 		/// ↑描画処理ここまで
 		///
@@ -155,7 +163,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	delete map;
 	delete coin;
 	delete mie;
-	delete mie2;
+	delete moo;
+	delete mar;
 
 	// ライブラリの終了
 	Novice::Finalize();

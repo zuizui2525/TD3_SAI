@@ -128,4 +128,5 @@ struct Images {
 	int player = Novice::LoadTexture("./Resources./images./Player.png");
 	int enemy_mie = Novice::LoadTexture("./Resources./images./EnemyMie.png");
 	int enemy_moo = Novice::LoadTexture("./Resources./images./EnemyMoo.png");
+	int enemy_mar = Novice::LoadTexture("./Resources./images./EnemyMar.png");
 };

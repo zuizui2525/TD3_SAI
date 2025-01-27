@@ -104,6 +104,7 @@
       <Filter>KamataEngine</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
+    <ClCompile Include="Mar.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -231,5 +232,6 @@
     <ClInclude Include="Clear.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Mar.h" />
   </ItemGroup>
 </Project>

@@ -1,14 +1,12 @@
 ﻿#pragma once
 #include "Enemy.h"
 
-class Moo: public Enemy {
+class Mar :public Enemy {
 public:
-	float postionA_;
-	float postionB_;
-	float distance_;
-	float reactionRange_;
-	Moo();
-	~Moo();
+	float lengthX_;
+	float lengthY_;
+	Mar();
+	~Mar();
 	void Set(int x, int y, Direction direction);
 	void Move(int map[mapRow][mapColumn], Player* player);
 	void Update();

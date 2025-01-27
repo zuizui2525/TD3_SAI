@@ -3,8 +3,9 @@
 
 class Mie: public Enemy {
 public:
-	Mie(float x, float y);
+	Mie();
 	~Mie();
+	void Set(int x, int y, Direction direction);
 	void Move(int map[mapRow][mapColumn]);
 	void Update();
 	void Draw();

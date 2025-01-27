@@ -9,7 +9,7 @@ public:
 	// メンバ変数
 	Images image_;                   //画像
 
-	Quad playerQuad_{};              // 座標
+	Quad quad_{};              // 座標
 
 	Vertices4<int> mapCurrent_;      // マップ上の座標
 
