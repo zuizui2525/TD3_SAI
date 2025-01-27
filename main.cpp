@@ -31,9 +31,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Map* map = new Map();
 	Coin* coin = new Coin();
 	Player* player = new Player(*map, 1, 1);
-	Mie* mie = new Mie(9,10);
-	Moo* moo = new Moo(11, 10);
-	Mar* mar = new Mar(13, 10);
+	Mie* mie = new Mie();
+	mie->Set(9, 10, UP);
+	Moo* moo = new Moo();
+	moo->Set(11, 10, UP);
+	Mar* mar = new Mar();
+	mar->Set(13, 10, UP);
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -53,6 +56,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		
 		if (keys[DIK_SPACE]) { // 軌跡反映用(仮)
+			mie->Set(9, 10, UP);
+			moo->Set(11, 10, UP);
+			mar->Set(13, 10, UP);
+			
 			map->changeTheMap(map1);
 
 			coin->Spawn(coins1);

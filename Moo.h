@@ -7,8 +7,9 @@ public:
 	float postionB_;
 	float distance_;
 	float reactionRange_;
-	Moo(float x, float y);
+	Moo();
 	~Moo();
+	void Set(int x, int y, Direction direction);
 	void Move(int map[mapRow][mapColumn], Player* player);
 	void Update();
 	void Draw();
