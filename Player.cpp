@@ -35,7 +35,7 @@ Player::Player(Map& m, int startX, int startY) : m_(m) {
 	isAlive_ = true;
 
 	// speed
-	speed_ = 3;
+	speed_ = 3.0f;
 
 	// 軌跡用
 	moveLength_ = { 0, 0 };

@@ -376,7 +376,7 @@ void Moo::Move(int map[mapRow][mapColumn], Player* player) {
 				) {
 				if (player->quad_.pos.x >= enemy_.pos.x && prevDirection_ != LEFT) {
 					direction_ = RIGHT;
-				} else if(player->quad_.pos.x < enemy_.pos.x && prevDirection_ != RIGHT) {
+				} else if (player->quad_.pos.x < enemy_.pos.x && prevDirection_ != RIGHT) {
 					direction_ = LEFT;
 				}
 			} else if (//右と左の２方向が壁
@@ -387,16 +387,16 @@ void Moo::Move(int map[mapRow][mapColumn], Player* player) {
 				) {
 				if (player->quad_.pos.y <= enemy_.pos.y && prevDirection_ != DOWN) {
 					direction_ = UP;
-				} else if(player->quad_.pos.y > enemy_.pos.y && prevDirection_ != UP){
+				} else if (player->quad_.pos.y > enemy_.pos.y && prevDirection_ != UP) {
 					direction_ = DOWN;
 				}
 			} else if (//上が壁
 				map[advance_.leftTop.y][stop_.leftTop.x] == 0//左上
 				&& map[advance_.rightTop.y][stop_.rightTop.x] == 0//右上
 				) {
-				if (player->quad_.pos.x >= enemy_.pos.x  && prevDirection_ != LEFT) {
+				if (player->quad_.pos.x >= enemy_.pos.x && prevDirection_ != LEFT) {
 					direction_ = RIGHT;
-				} else if (player->quad_.pos.x <= enemy_.pos.x  && prevDirection_ != RIGHT) {
+				} else if (player->quad_.pos.x <= enemy_.pos.x && prevDirection_ != RIGHT) {
 					direction_ = LEFT;
 				} else if (prevDirection_ != UP) {
 					direction_ = DOWN;
@@ -405,9 +405,9 @@ void Moo::Move(int map[mapRow][mapColumn], Player* player) {
 				map[advance_.leftBottom.y][stop_.leftBottom.x] == 0//左下
 				&& map[advance_.rightBottom.y][stop_.rightBottom.x] == 0//右下
 				) {
-				if (player->quad_.pos.x >= enemy_.pos.x  && prevDirection_ != LEFT) {
+				if (player->quad_.pos.x >= enemy_.pos.x && prevDirection_ != LEFT) {
 					direction_ = RIGHT;
-				} else if (player->quad_.pos.x < enemy_.pos.x  && prevDirection_ != RIGHT) {
+				} else if (player->quad_.pos.x < enemy_.pos.x && prevDirection_ != RIGHT) {
 					direction_ = LEFT;
 				} else if (prevDirection_ != DOWN) {
 					direction_ = UP;
@@ -427,7 +427,7 @@ void Moo::Move(int map[mapRow][mapColumn], Player* player) {
 				map[stop_.rightTop.y][advance_.rightTop.x] == 0//右上
 				&& map[stop_.rightBottom.y][advance_.rightBottom.x] == 0//右下
 				) {
-				if (player->quad_.pos.y <= enemy_.pos.y  && prevDirection_ != DOWN) {
+				if (player->quad_.pos.y <= enemy_.pos.y && prevDirection_ != DOWN) {
 					direction_ = UP;
 				} else if (player->quad_.pos.y > enemy_.pos.y && prevDirection_ != UP) {
 					direction_ = DOWN;
@@ -452,8 +452,8 @@ void Moo::Move(int map[mapRow][mapColumn], Player* player) {
 		}
 	}
 
-	Novice::ScreenPrintf(0, 0, "X : %.1f", postionA_);
-	Novice::ScreenPrintf(0, 20, "Y : %.1f", postionB_);
+	//Novice::ScreenPrintf(0, 0, "X : %.1f", postionA_);
+	//Novice::ScreenPrintf(0, 20, "Y : %.1f", postionB_);
 
 	//実際に動かす部分②
 	switch (direction_) {
