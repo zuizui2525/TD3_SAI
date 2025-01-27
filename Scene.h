@@ -1,35 +1,27 @@
 ﻿#pragma once
-#include <Novice.h>
-#include "Player.h"
-#include "map.h"
-#include "Coin.h"
 
-class SceneManager {
+
+class Scene {
 public:
     // ゲームのシーンの種類
     enum SceneType {
         TITLE,
         STAGESELECT,
         GAME,
-        CLEAR,
+        GAMECLEAR,
         GAMEOVER
     };
 
-    Player* player_;
-
-    Map* m_;
-    Coin* c_;
-
 private:
     SceneType currentScene;  // 現在のシーン
-    int transitioning_;       // シーン遷移中かどうか
+    int transitioning_;      // シーン遷移中かどうか
 
 public:
     // コンストラクタとデストラクタ
-    SceneManager();
-    ~SceneManager();
+    Scene();
+    ~Scene();
 
-    void HandleInput(char* keys, char* preKeys);
+    void Update();
 
     // 現在のシーンを取得
     SceneType GetCurrentScene() { return currentScene; }
@@ -42,8 +34,5 @@ public:
 
     // シーンのクリーンアップ処理
     void CleanupScene(SceneType scene);
-
-    // デバッグ用に現在のシーンを表示
-    void PrintCurrentScene();
 };
 
