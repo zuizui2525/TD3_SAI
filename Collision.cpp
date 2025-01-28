@@ -3,7 +3,7 @@
 
 int Collision(Quad* objA, Quad* objB, int modeSelect) {
 	if (sqrtf(powf(objA->pos.x - objB->pos.x, 2.0f) + powf(objA->pos.y - objB->pos.y, 2.0f))
-		< objA->radius.x + objB->radius.x) {
+		< sqrtf(powf(objA->radius.x + objB->radius.x, 2.0f))) {
 		if (modeSelect == 0) {
 			return true;
 		} else {
