@@ -62,7 +62,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			
 			map->changeTheMap(map1);
 
-			coin->Spawn(coins1);
+			coin->Spawn(coins3);
 
 			coin->takeCount = 0;
 
