@@ -4,7 +4,7 @@
 #include "Zuizui.h"
 #include "map.h"
 
-const int kMaxCoinNum = 4;
+const int kMaxCoinNum = 5;
 
 class Coin {
 public:
