@@ -79,7 +79,7 @@ int map2[mapRow][mapColumn] = {
 
 //stage3
 Vector2<int> coins3[kMaxCoinNum] = {
-	{3,3},{5,19},{16,5},{16,17}
+	{3,3},{5,19},{16,5},{16,17},{16,10}
 };
 int map3[mapRow][mapColumn] = {
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
