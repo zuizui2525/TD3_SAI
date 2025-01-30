@@ -12,6 +12,21 @@
 #include "Mar.h"
 #include "Collision.h"
 
+// ゲームのシーンの種類
+enum SceneType {
+	TITLE,
+	STAGESELECT,
+	GAME,
+	GAMECLEAR,
+	GAMEOVER
+};
+
+enum StageType {
+	STAGE1,
+	STAGE2,
+	STAGE3
+};
+
 
 const char kWindowTitle[] = "1321_塞-SAI-";
 
@@ -30,6 +45,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	srand(currentTime);
 
 
+	SceneType sceneType = TITLE;
+	StageType stageType = STAGE1;
+
+	int stageSelectNum = 1;
+	int isGameStart = false;
+
 	Map* map = new Map();
 	Coin* coin = new Coin();
 	Player* player = new Player(*map, 1, 1);
@@ -41,8 +62,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	mar->Set(13, 10, UP);
 
 	// キー入力結果を受け取る箱
-	char keys[256] = {0};
-	char preKeys[256] = {0};
+	char keys[256] = { 0 };
+	char preKeys[256] = { 0 };
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -56,89 +77,396 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓更新処理ここから
 		///
-		
-		if (keys[DIK_R] && !preKeys[DIK_R]) { // 軌跡反映用(仮)
-			mie->Set(9, 10, UP);
-			moo->Set(11, 10, UP);
-			mar->Set(13, 10, UP);
-			
-			map->changeTheMap(map1);
 
-			coin->Spawn(coins3);
+		switch (sceneType)
+		{
+		case TITLE:
 
-			player->Initialize(1, 1);
-		}
-		map->Update();
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) { // 軌跡反映用(仮)
+				sceneType = STAGESELECT;
+			}
 
-		// プレイヤーの処理
-		player->Update(keys);
-		
-		//敵の処理
-		mie->Move(map->map_);
-		mie->Update();
-		moo->Move(map->map_, player);
-		moo->Update();
-		mar->Move(map->map_, player);
-		mar->Update();
-		
-		// 衝突判定
-		if (Collision(&player->quad_, &mie->enemy_, 0)
-			|| Collision(&player->quad_, &moo->enemy_, 0)
-			|| Collision(&player->quad_, &mar->enemy_, 0)) {
-			player->isAlive_ = false;
-		}
+			break;
+		case STAGESELECT:
 
-		for (int i = 0; i < kMaxCoinNum; i++) {
-			if (!coin->isTaken_[i]) {
-				if (Collision(&player->quad_, &coin->coins_[i], 0)) {
-					coin->isTaken_[i] = true;
-					coin->takeCount++;
+			if (keys[DIK_A] && !preKeys[DIK_A]
+				|| keys[DIK_LEFT] && !preKeys[DIK_LEFT]) {
+				stageSelectNum--;
+			}
+
+			if (keys[DIK_D] && !preKeys[DIK_D]
+				|| keys[DIK_RIGHT] && !preKeys[DIK_RIGHT]) {
+				stageSelectNum++;
+			}
+
+			if (stageSelectNum <= 0) {
+				stageSelectNum = 3;
+			}
+
+			if (stageSelectNum > 3) {
+				stageSelectNum = 1;
+			}
+
+			if (stageSelectNum == 1) {
+				stageType = STAGE1;
+			} else if (stageSelectNum == 2) {
+				stageType = STAGE2;
+			} else if (stageSelectNum == 3) {
+				stageType = STAGE3;
+			}
+
+
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) { // 軌跡反映用(仮)
+				sceneType = GAME;
+			}
+
+			if (sceneType != STAGESELECT) { // 戻らなければ
+				break;
+			}
+
+			switch (stageType)
+			{
+			case STAGE1:
+
+				// 初期化
+				mie->Set(5, 12, LEFT);
+				moo->Set(15, 12, RIGHT);
+				mar->Set(18, 5, LEFT);
+
+				map->changeTheMap(map1);
+
+				coin->Spawn(coins1);
+
+				player->Initialize(5, 3);
+
+				break;
+			case STAGE2:
+
+				// 初期化
+				mie->Set(5, 6, DOWN);
+				moo->Set(19, 10, LEFT);
+				mar->Set(10, 16, UP);
+
+				map->changeTheMap(map2);
+
+				coin->Spawn(coins2);
+
+				player->Initialize(10, 9);
+
+				break;
+			case STAGE3:
+
+				// 初期化
+				mie->Set(6, 6, RIGHT);
+				moo->Set(16, 13, DOWN);
+				mar->Set(4, 14, RIGHT);
+
+				map->changeTheMap(map3);
+
+				coin->Spawn(coins3);
+
+				player->Initialize(10, 13);
+
+				break;
+			}
+
+			break;
+		case GAME:
+
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) { // 軌跡反映用(仮)
+				isGameStart = true;
+			}
+
+			if (!isGameStart) {
+				break;
+			}
+
+			switch (stageType)
+			{
+			case STAGE1:
+
+				// リセット
+				if (keys[DIK_R] && !preKeys[DIK_R]) { // 軌跡反映用(仮)
+					mie->Set(5, 12, LEFT);
+					moo->Set(15, 12, RIGHT);
+					mar->Set(18, 5, LEFT);
+
+					map->changeTheMap(map1);
+
+					coin->Spawn(coins1);
+
+					player->Initialize(5, 3);
+				}
+
+				break;
+			case STAGE2:
+
+				// リセット
+				if (keys[DIK_R] && !preKeys[DIK_R]) { // 軌跡反映用(仮)
+					mie->Set(5, 6, DOWN);
+					moo->Set(19, 10, LEFT);
+					mar->Set(10, 16, UP);
+
+					map->changeTheMap(map2);
+
+					coin->Spawn(coins2);
+
+					player->Initialize(10, 9);
+				}
+
+				break;
+			case STAGE3:
+
+				// リセット
+				if (keys[DIK_R] && !preKeys[DIK_R]) { // 軌跡反映用(仮)
+					mie->Set(6, 6, RIGHT);
+					moo->Set(16, 13, DOWN);
+					mar->Set(4, 14, RIGHT);
+
+					map->changeTheMap(map3);
+
+					coin->Spawn(coins3);
+
+					player->Initialize(10, 13);
+				}
+
+				break;
+			}
+
+			map->Update();
+
+			// プレイヤーの処理
+			player->Update(keys);
+
+			//敵の処理
+			mie->Move(map->map_);
+			mie->Update();
+			moo->Move(map->map_, player);
+			moo->Update();
+			mar->Move(map->map_, player);
+			mar->Update();
+
+			// 衝突判定
+			if (Collision(&player->quad_, &mie->enemy_, 0)
+				|| Collision(&player->quad_, &moo->enemy_, 0)
+				|| Collision(&player->quad_, &mar->enemy_, 0)) {
+				player->isAlive_ = false;
+			}
+
+			for (int i = 0; i < kMaxCoinNum; i++) {
+				if (!coin->isTaken_[i]) {
+					if (Collision(&player->quad_, &coin->coins_[i], 0)) {
+						coin->isTaken_[i] = true;
+						coin->takeCount++;
+					}
 				}
 			}
+
+			CleanTlale(mie, map);
+			CleanTlale(moo, map);
+			CleanTlale(mar, map);
+
+			if (coin->takeCount >= kMaxCoinNum) {
+				sceneType = GAMECLEAR;
+			}
+
+			if (!player->isAlive_) {
+				sceneType = GAMEOVER;
+			}
+
+			break;
+		case GAMECLEAR:
+
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) { // リセット
+				sceneType = STAGESELECT;
+				isGameStart = false;
+			}
+
+			if (sceneType != GAMECLEAR) { // 戻らなければ
+				break;
+			}
+
+			switch (stageType)
+			{
+			case STAGE1:
+
+				// 初期化
+				mie->Set(5, 12, LEFT);
+				moo->Set(15, 12, RIGHT);
+				mar->Set(18, 5, LEFT);
+
+				map->changeTheMap(map1);
+
+				coin->Spawn(coins1);
+
+				player->Initialize(5, 3);
+
+				break;
+			case STAGE2:
+
+				// 初期化
+				mie->Set(5, 6, DOWN);
+				moo->Set(19, 10, LEFT);
+				mar->Set(10, 16, UP);
+
+				map->changeTheMap(map2);
+
+				coin->Spawn(coins2);
+
+				player->Initialize(10, 9);
+
+				break;
+			case STAGE3:
+
+				// 初期化
+				mie->Set(6, 6, RIGHT);
+				moo->Set(16, 13, DOWN);
+				mar->Set(4, 14, RIGHT);
+
+				map->changeTheMap(map3);
+
+				coin->Spawn(coins3);
+
+				player->Initialize(10, 13);
+
+				break;
+			}
+
+			break;
+		case GAMEOVER:
+
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) { // リセット
+				sceneType = STAGESELECT;
+				isGameStart = false;
+			}
+
+			if (sceneType != GAMEOVER) { // 戻らなければ
+				break;
+			}
+
+			switch (stageType)
+			{
+			case STAGE1:
+
+				// 初期化
+				mie->Set(5, 12, LEFT);
+				moo->Set(15, 12, RIGHT);
+				mar->Set(18, 5, LEFT);
+
+				map->changeTheMap(map1);
+
+				coin->Spawn(coins1);
+
+				player->Initialize(5, 3);
+
+				break;
+			case STAGE2:
+
+				// 初期化
+				mie->Set(5, 6, DOWN);
+				moo->Set(19, 10, LEFT);
+				mar->Set(10, 16, UP);
+
+				map->changeTheMap(map2);
+
+				coin->Spawn(coins2);
+
+				player->Initialize(10, 9);
+
+				break;
+			case STAGE3:
+
+				// 初期化
+				mie->Set(6, 6, RIGHT);
+				moo->Set(16, 13, DOWN);
+				mar->Set(4, 14, RIGHT);
+
+				map->changeTheMap(map3);
+
+				coin->Spawn(coins3);
+
+				player->Initialize(10, 13);
+
+				break;
+			}
+
+			break;
 		}
 
-		CleanTlale(mie, map);
-		CleanTlale(moo, map);
-		CleanTlale(mar, map);
+
 
 		///
 		/// ↑更新処理ここまで
 		///
-		
+
 		///
 		/// ↓描画処理ここから
 		///
-		
-		map->Draw();
 
-		coin->Draw();
+		switch (sceneType)
+		{
+		case TITLE:
 
-		player->Draw();
+			Novice::ScreenPrintf(900, 540, "SAI");
 
-		mie->Draw();
-		moo->Draw();
-		mar->Draw();
+			Novice::ScreenPrintf(840, 900, "Press to SPACE");
 
-		for (int y = 0; y < mapRow; y++) {
-			for (int x = 0; x < mapColumn; x++) {
-				Novice::ScreenPrintf(1300 + x * 20, y * 20, "%d", map->map_[y][x]);
+			break;
+		case STAGESELECT:
+
+			Novice::ScreenPrintf(900, 540, "STAGE %d", stageSelectNum);
+
+			Novice::ScreenPrintf(840, 900, "WASD||Arrow : Stage Change");
+
+			Novice::ScreenPrintf(840, 960, "SPACE : Select");
+			break;
+		case GAME:
+
+			if (!isGameStart) {
+				Novice::ScreenPrintf(900, 540, "SPACE : Start");
+				break;
 			}
+
+			map->Draw();
+
+			coin->Draw();
+
+			player->Draw();
+
+			mie->Draw();
+			moo->Draw();
+			mar->Draw();
+
+			Novice::ScreenPrintf(1300, 1000, "R: reset");
+
+			Novice::ScreenPrintf(1300, 800, "Coin: %d / %d", coin->takeCount, kMaxCoinNum);
+
+
+			/*for (int y = 0; y < mapRow; y++) {
+				for (int x = 0; x < mapColumn; x++) {
+					Novice::ScreenPrintf(1300 + x * 20, y * 20, "%d", map->map_[y][x]);
+				}
+			}*/
+
+			break;
+		case GAMECLEAR:
+
+			Novice::ScreenPrintf(900, 540, "CLEAR");
+
+			Novice::ScreenPrintf(840, 960, "Press to SPACE");
+
+			break;
+		case GAMEOVER:
+
+			Novice::ScreenPrintf(900, 540, "GAMEOVER");
+
+			Novice::ScreenPrintf(840, 960, "Press to SPACE");
+
+			break;
 		}
 
-		Novice::ScreenPrintf(1300, 1000, "R: reset");
 
-		Novice::ScreenPrintf(1300,800, "Coin: %d / %d", coin->takeCount, kMaxCoinNum);
 
-		if (coin->takeCount >= kMaxCoinNum) {
-			Novice::ScreenPrintf(1300, 700, "CLEAR");
-		}
-
-		for (int y = 0; y < mapRow; y++) {
-			for (int x = 0; x < mapColumn; x++) {
-				Novice::ScreenPrintf(1300 + x * 20, y * 20, "%d", map->map_[y][x]);
-			}
-		}
-		
 
 		///
 		/// ↑描画処理ここまで
